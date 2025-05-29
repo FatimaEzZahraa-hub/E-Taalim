@@ -147,13 +147,16 @@
         <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.dashboard') ? 'active' : '' }}">
             <i class="bi bi-grid-1x2"></i> <span>Ressources Pédagogiques</span>
         </a>
-        <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.calendar') ? 'active' : '' }}">
+        <a href="{{ route('enseignant.calendrier') }}" class="{{ request()->routeIs('enseignant.calendrier') ? 'active' : '' }}">
             <i class="bi bi-calendar3"></i> <span>Calendrier</span>
         </a>
         <a href="{{ route('enseignant.messages') }}" class="{{ request()->routeIs('enseignant.messages') ? 'active' : '' }}">
-            <i class="bi bi-chat"></i> <span>Messagerie</span>
+            <i class="bi bi-envelope"></i> <span>Messagerie</span>
         </a>
-        <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.students') ? 'active' : '' }}">
+        <a href="{{ route('enseignant.chat') }}" class="{{ request()->routeIs('enseignant.chat') ? 'active' : '' }}">
+            <i class="bi bi-chat-dots-fill"></i> <span>Chat</span>
+        </a>
+        <a href="{{ route('enseignant.etudiants') }}" class="{{ request()->routeIs('enseignant.etudiants') ? 'active' : '' }}">
             <i class="bi bi-people"></i> <span>Etudiants</span>
         </a>
         <a href="{{ route('enseignant.profil') }}" class="{{ request()->routeIs('enseignant.profil') ? 'active' : '' }}">

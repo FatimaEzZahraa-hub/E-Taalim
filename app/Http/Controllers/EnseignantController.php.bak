@@ -64,8 +64,6 @@ class EnseignantController extends Controller
         $enseignant->prenom = 'Test';
         $enseignant->telephone = '0600000000';
         $enseignant->photo = null;
-        $enseignant->code = 'default_code'; // Added code property to $enseignant initialization
-        $enseignant->cours = collect(); // Added cours property to $enseignant initialization
         
         // Obtenir les classes disponibles
         $classes = $this->getClasses();
@@ -152,7 +150,6 @@ class EnseignantController extends Controller
         $enseignant->prenom = 'Test';
         $enseignant->telephone = '0600000000';
         $enseignant->photo = null;
-        $enseignant->code = 'default_code'; // Added code property to $enseignant initialization
         
         return view('enseignant.profil', compact('enseignant'));
     }
@@ -708,131 +705,155 @@ class EnseignantController extends Controller
     }
     
     /**
-     * Affiche la page de chat (messagerie instantanée)
-     */
-    public function chat()
-    {
-        // Dans une implémentation réelle, vous récupéreriez la liste des contacts et des messages
-        // Pour cette démo, nous utilisons des données statiques
-        
-        return view('enseignant.chat.index');
-    }
-    
-    /**
      * Affiche la page du calendrier
      */
     public function calendrier()
     {
-        // Exemple d'événements pour démonstration
-        $events = [
-            ['id' => 1, 'title' => 'Hackathon IA', 'date' => '2025-02-24', 'time' => '09:00', 'description' => 'Hackathon sur l\'intelligence artificielle organisé par l\'université.'],
-            ['id' => 2, 'title' => 'Examen Final', 'date' => '2025-02-28', 'time' => '14:00', 'description' => 'Examen final du module Programmation Web.'],
-            ['id' => 3, 'title' => 'Réunion Pédagogique', 'date' => '2025-02-15', 'time' => '10:30', 'description' => 'Réunion avec l\'ensemble des enseignants du département.'],
-        ];
+        // Créer des événements fictifs pour le calendrier
+}
         
-        return view('enseignant.calendrier.index', compact('events'));
+public function createMessage()
+{
+    // Créer une collection fictive d'étudiants
+    $etudiants = collect();
+            
+    // Ajouter quelques étudiants fictifs
+    for ($i = 1; $i <= 10; $i++) {
+        $etudiant = new \stdClass();
+        $etudiant->id = $i;
+        $etudiant->nom = 'Nom ' . $i;
+        $etudiant->prenom = 'Prénom ' . $i;
+        $etudiants->push($etudiant);
     }
-    
-    /**
-     * Affiche la liste des étudiants
-     */
-    public function etudiants()
-    {
-        // Générer des étudiants fictifs pour démonstration (plus d'étudiants pour la pagination)
-        $etudiantsData = [
-            (object) ['id' => 1, 'code' => 'R34678986', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Tazi', 'prenom' => 'Saad', 'email' => 'Tazi.Saad@gmail.com'],
-            (object) ['id' => 2, 'code' => 'R12678890', 'filiere' => 'ID', 'classe' => 'ID-3A', 'nom' => 'Saki', 'prenom' => 'Leila', 'email' => 'Saki.Leila@gmail.com'],
-            (object) ['id' => 3, 'code' => 'A11234567', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Alami', 'prenom' => 'Fahd', 'email' => 'Alami.Fahd@gmail.com'],
-            (object) ['id' => 4, 'code' => 'A09876543', 'filiere' => 'ID', 'classe' => 'ID-2A', 'nom' => 'Radi', 'prenom' => 'Mina', 'email' => 'Radi.Mina@gmail.com'],
-            (object) ['id' => 5, 'code' => 'R24670087', 'filiere' => 'DD', 'classe' => 'DD-1A', 'nom' => 'Soul', 'prenom' => 'Hiba', 'email' => 'Soul.Hiba@gmail.com'],
-            (object) ['id' => 6, 'code' => 'R35689012', 'filiere' => 'ID', 'classe' => 'ID-1A', 'nom' => 'Bennani', 'prenom' => 'Karim', 'email' => 'Bennani.Karim@gmail.com'],
-            (object) ['id' => 7, 'code' => 'A22345678', 'filiere' => 'GE', 'classe' => 'GE-2A', 'nom' => 'Ouazzani', 'prenom' => 'Yasmine', 'email' => 'Ouazzani.Yasmine@gmail.com'],
-            (object) ['id' => 8, 'code' => 'R45678901', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Idrissi', 'prenom' => 'Omar', 'email' => 'Idrissi.Omar@gmail.com'],
-            (object) ['id' => 9, 'code' => 'A33456789', 'filiere' => 'ID', 'classe' => 'ID-3A', 'nom' => 'Berrada', 'prenom' => 'Sara', 'email' => 'Berrada.Sara@gmail.com'],
-            (object) ['id' => 10, 'code' => 'R56789012', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Chraibi', 'prenom' => 'Mehdi', 'email' => 'Chraibi.Mehdi@gmail.com'],
-            (object) ['id' => 11, 'code' => 'A44567890', 'filiere' => 'DD', 'classe' => 'DD-1A', 'nom' => 'Tahiri', 'prenom' => 'Amine', 'email' => 'Tahiri.Amine@gmail.com'],
-            (object) ['id' => 12, 'code' => 'R67890123', 'filiere' => 'ID', 'classe' => 'ID-2A', 'nom' => 'Lahlou', 'prenom' => 'Nadia', 'email' => 'Lahlou.Nadia@gmail.com'],
-            (object) ['id' => 13, 'code' => 'A55678901', 'filiere' => 'GE', 'classe' => 'GE-2A', 'nom' => 'Benmoussa', 'prenom' => 'Youssef', 'email' => 'Benmoussa.Youssef@gmail.com'],
-            (object) ['id' => 14, 'code' => 'R78901234', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Alaoui', 'prenom' => 'Fatima', 'email' => 'Alaoui.Fatima@gmail.com'],
-            (object) ['id' => 15, 'code' => 'A66789012', 'filiere' => 'ID', 'classe' => 'ID-1A', 'nom' => 'Ziani', 'prenom' => 'Hamza', 'email' => 'Ziani.Hamza@gmail.com'],
-            (object) ['id' => 16, 'code' => 'R89012345', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Mansouri', 'prenom' => 'Imane', 'email' => 'Mansouri.Imane@gmail.com'],
-            (object) ['id' => 17, 'code' => 'A77890123', 'filiere' => 'DD', 'classe' => 'DD-1A', 'nom' => 'Bouali', 'prenom' => 'Rachid', 'email' => 'Bouali.Rachid@gmail.com'],
-            (object) ['id' => 18, 'code' => 'R90123456', 'filiere' => 'ID', 'classe' => 'ID-3A', 'nom' => 'Khalil', 'prenom' => 'Salma', 'email' => 'Khalil.Salma@gmail.com'],
-            (object) ['id' => 19, 'code' => 'A88901234', 'filiere' => 'GE', 'classe' => 'GE-2A', 'nom' => 'Hassani', 'prenom' => 'Bilal', 'email' => 'Hassani.Bilal@gmail.com'],
-            (object) ['id' => 20, 'code' => 'R01234567', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Benjelloun', 'prenom' => 'Zineb', 'email' => 'Benjelloun.Zineb@gmail.com'],
-            (object) ['id' => 21, 'code' => 'A99012345', 'filiere' => 'ID', 'classe' => 'ID-2A', 'nom' => 'Moussaoui', 'prenom' => 'Ismail', 'email' => 'Moussaoui.Ismail@gmail.com'],
-            (object) ['id' => 22, 'code' => 'R12345678', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Fassi', 'prenom' => 'Hajar', 'email' => 'Fassi.Hajar@gmail.com'],
-        ];
+            
+    return view('enseignant.messages.create', compact('etudiants'));
+}
         
-        // Convertir le tableau en collection pour utiliser la pagination
-        $etudiantsCollection = collect($etudiantsData);
+public function storeMessage(Request $request)
+{
+    $request->validate([
+        'destinataire_id' => 'required',
+        'sujet' => 'required|string|max:255',
+        'contenu' => 'required|string',
+    ]);
+            
+    // Simuler l'enregistrement du message
+            
+    return redirect()->route('enseignant.messages')->with('success', 'Message envoyé avec succès.');
+}
         
-        // Obtenir la page actuelle à partir de la requête
-        $page = request()->get('page', 1);
-        
-        // Nombre d'étudiants par page
-        $perPage = 10;
-        
-        // Calculer l'offset
-        $offset = ($page - 1) * $perPage;
-        
-        // Récupérer les étudiants pour la page actuelle
-        $currentPageEtudiants = $etudiantsCollection->slice($offset, $perPage)->values();
-        
-        // Créer un paginateur personnalisé
-        $etudiants = new \Illuminate\Pagination\LengthAwarePaginator(
-            $currentPageEtudiants,
-            $etudiantsCollection->count(),
-            $perPage,
-            $page,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
-        
-        return view('enseignant.etudiants.index', compact('etudiants'));
+public function showMessage($id)
+{
+    // Créer un message fictif
+    $message = new \stdClass();
+    $message->id = $id;
+    $message->sujet = 'Sujet du message ' . $id;
+    $message->contenu = 'Contenu du message ' . $id . '. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.';
+    $message->date_envoi = now()->subDays($id);
+    $message->lu = true;
+            
+    if ($id % 2 == 0) {
+        // Message reçu
+        $message->expediteur = new \stdClass();
+        $message->expediteur->id = $id;
+        $message->expediteur->nom = 'Nom ' . $id;
+        $message->expediteur->prenom = 'Prénom ' . $id;
+        $message->expediteur->type = 'Étudiant';
+        $message->type = 'reçu';
+    } else {
+        // Message envoyé
+        $message->destinataire = new \stdClass();
+        $message->destinataire->id = $id;
+        $message->destinataire->nom = 'Nom ' . $id;
+        $message->destinataire->prenom = 'Prénom ' . $id;
+        $message->destinataire->type = 'Étudiant';
+        $message->type = 'envoyé';
     }
-    
-    /**
-     * Enregistre un nouvel étudiant
-     */
-    public function storeEtudiant(Request $request)
-    {
-        // Logique pour enregistrer un étudiant
-        // Dans une implémentation réelle, vous valideriez les données et les enregistreriez dans la base de données
+            
+    return view('enseignant.messages.show', compact('message'));
+}
         
-        return redirect()->route('enseignant.etudiants')->with('success', 'L\'\u00e9tudiant a été ajouté avec succès.');
-    }
-    
-    /**
-     * Importe une liste d'étudiants depuis un fichier Excel
-     */
-    public function importEtudiants(Request $request)
-    {
-        // Logique pour importer des étudiants depuis un fichier Excel
-        // Dans une implémentation réelle, vous valideriez le fichier et importeriez les données
+public function deleteMessage($id)
+{
+    // Simuler la suppression du message
+            
+    return redirect()->route('enseignant.messages')->with('success', 'Message supprimé avec succès.');
+}
         
-        return redirect()->route('enseignant.etudiants')->with('success', 'Les étudiants ont été importés avec succès.');
-    }
-    
-    /**
-     * Télécharge un modèle de fichier Excel pour l'importation d'étudiants
-     */
-    public function downloadEtudiantsTemplate()
-    {
-        // Logique pour générer et télécharger un modèle de fichier Excel
-        // Dans une implémentation réelle, vous généreriez un fichier Excel avec les en-têtes appropriées
+/**
+ * Affiche la page du calendrier
+ */
+public function calendrier()
+{
+    // Exemple d'événements pour démonstration
+    $events = [
+        ['id' => 1, 'title' => 'Hackathon IA', 'date' => '2025-02-24', 'time' => '09:00', 'description' => 'Hackathon sur l\'intelligence artificielle organisé par l\'université.'],
+        ['id' => 2, 'title' => 'Examen Final', 'date' => '2025-02-28', 'time' => '14:00', 'description' => 'Examen final du module Programmation Web.'],
+        ['id' => 3, 'title' => 'Réunion Pédagogique', 'date' => '2025-02-15', 'time' => '10:30', 'description' => 'Réunion avec l\'ensemble des enseignants du département.'],
+    ];
+            
+    return view('enseignant.calendrier.index', compact('events'));
+}
         
-        // Pour l'instant, redirigeons simplement vers la page des étudiants
-        return redirect()->route('enseignant.etudiants');
-    }
-    
-    /**
-     * Supprime un étudiant
-     */
-    public function deleteEtudiant($id)
-    {
-        // Logique pour supprimer un étudiant
-        // Dans une implémentation réelle, vous trouveriez l'étudiant par son ID et le supprimeriez
+/**
+ * Affiche la liste des étudiants
+ */
+public function etudiants()
+{
+    // Générer des étudiants fictifs pour démonstration
+    $etudiants = [
+        (object) ['id' => 1, 'code' => 'R34678986', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Tazi', 'prenom' => 'Saad', 'email' => 'Tazi.Saad@gmail.com'],
+        (object) ['id' => 2, 'code' => 'R12678890', 'filiere' => 'ID', 'classe' => 'ID-3A', 'nom' => 'Saki', 'prenom' => 'Leila', 'email' => 'Saki.Leila@gmail.com'],
+        (object) ['id' => 3, 'code' => 'A11234567', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Alami', 'prenom' => 'Fahd', 'email' => 'Alami.Fahd@gmail.com'],
+        (object) ['id' => 4, 'code' => 'A09876543', 'filiere' => 'ID', 'classe' => 'ID-2A', 'nom' => 'Radi', 'prenom' => 'Mina', 'email' => 'Radi.Mina@gmail.com'],
+        (object) ['id' => 5, 'code' => 'R24670087', 'filiere' => 'DD', 'classe' => 'DD-1A', 'nom' => 'Soul', 'prenom' => 'Hiba', 'email' => 'Soul.Hiba@gmail.com'],
+    ];
+            
+    return view('enseignant.etudiants.index', compact('etudiants'));
+}
         
-        return redirect()->route('enseignant.etudiants')->with('success', 'L\'\u00e9tudiant a été supprimé avec succès.');
-    }
+/**
+ * Enregistre un nouvel étudiant
+ */
+public function storeEtudiant(Request $request)
+{
+    // Logique pour enregistrer un étudiant
+    // Dans une implémentation réelle, vous valideriez les données et les enregistreriez dans la base de données
+            
+    return redirect()->route('enseignant.etudiants')->with('success', 'L\'étudiant a été ajouté avec succès.');
+}
+        
+/**
+ * Importe une liste d'étudiants depuis un fichier Excel
+ */
+public function importEtudiants(Request $request)
+{
+    // Logique pour importer des étudiants depuis un fichier Excel
+    // Dans une implémentation réelle, vous valideriez le fichier et importeriez les données
+            
+    return redirect()->route('enseignant.etudiants')->with('success', 'Les étudiants ont été importés avec succès.');
+}
+        
+/**
+ * Télécharge un modèle de fichier Excel pour l'importation d'étudiants
+ */
+public function downloadEtudiantsTemplate()
+{
+    // Logique pour générer et télécharger un modèle de fichier Excel
+    // Dans une implémentation réelle, vous généreriez un fichier Excel avec les en-têtes appropriées
+            
+    // Pour l'instant, redirigeons simplement vers la page des étudiants
+    return redirect()->route('enseignant.etudiants');
+}
+        
+/**
+ * Supprime un étudiant
+ */
+public function deleteEtudiant($id)
+{
+    // Logique pour supprimer un étudiant
+    // Dans une implémentation réelle, vous trouveriez l'étudiant par son ID et le supprimeriez
+            
+    return redirect()->route('enseignant.etudiants')->with('success', 'L\'étudiant a été supprimé avec succès.');
+}
 }

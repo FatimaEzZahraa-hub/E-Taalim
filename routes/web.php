@@ -27,6 +27,12 @@ Route::prefix('enseignant')->name('enseignant.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [EnseignantController::class, 'dashboard'])->name('dashboard');
     
+    // Routes pour la gestion des étudiants
+    Route::get('/etudiants', [EnseignantController::class, 'etudiants'])->name('etudiants');
+    Route::post('/etudiants', [EnseignantController::class, 'storeEtudiant'])->name('etudiants.store');
+    Route::post('/etudiants/import', [EnseignantController::class, 'importEtudiants'])->name('etudiants.import');
+    Route::get('/etudiants/template', [EnseignantController::class, 'downloadEtudiantsTemplate'])->name('etudiants.template');
+    
     // Profil
     Route::get('/profil', [EnseignantController::class, 'profil'])->name('profil');
     Route::post('/profil', [EnseignantController::class, 'updateProfil'])->name('profil.update');
@@ -52,7 +58,7 @@ Route::prefix('enseignant')->name('enseignant.')->group(function () {
     
     // Examens
     Route::get('/examens', [EnseignantController::class, 'allExamens'])->name('examens');
-    Route::get('/cours/{coursId}/examens/create', [EnseignantController::class, 'createExamen'])->name('examens.create');
+    Route::get('/cours/{coursId}/examens/create', [EnseignantController::class, 'createExamen'])->name('cours.examens.create');
     Route::get('/cours/{coursId}/examens', [EnseignantController::class, 'examens'])->name('cours.examens');
     Route::post('/cours/{coursId}/examens', [EnseignantController::class, 'storeExamen'])->name('cours.examens.store');
     Route::get('/cours/{coursId}/examens/{id}/edit', [EnseignantController::class, 'editExamen'])->name('cours.examens.edit');
@@ -69,4 +75,10 @@ Route::prefix('enseignant')->name('enseignant.')->group(function () {
     Route::post('/messages', [EnseignantController::class, 'storeMessage'])->name('messages.store');
     Route::get('/messages/{id}', [EnseignantController::class, 'showMessage'])->name('messages.show');
     Route::delete('/messages/{id}', [EnseignantController::class, 'deleteMessage'])->name('messages.delete');
+    
+    // Chat (messagerie instantanée)
+    Route::get('/chat', [EnseignantController::class, 'chat'])->name('chat');
+    
+    // Calendrier
+    Route::get('/calendrier', [EnseignantController::class, 'calendrier'])->name('calendrier');
 });

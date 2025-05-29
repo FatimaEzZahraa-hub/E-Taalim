@@ -347,6 +347,57 @@
   @yield('styles')
   
   <style>
+    /* Styles pour les boutons d'action */
+    .btn-action {
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-action:hover, .btn-action:focus {
+      background-color: var(--primary-dark);
+      color: white;
+      box-shadow: 0 4px 10px rgba(134, 104, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    /* Styles pour la messagerie */
+    .message-item {
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    
+    .message-item:hover {
+      background-color: rgba(134, 104, 255, 0.05);
+    }
+    
+    .message-unread {
+      background-color: rgba(134, 104, 255, 0.08);
+    }
+    
+    .message-read {
+      background-color: transparent;
+    }
+    
+    .message-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .delete-btn {
+      opacity: 0.5;
+      transition: all 0.2s ease;
+    }
+    
+    .message-item:hover .delete-btn {
+      opacity: 1;
+    }
+    
     /* Different layout styles for teacher vs public pages */
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -413,7 +464,7 @@
       if (request()->routeIs('enseignant.examens*')) $activeTab = 'examens';
       if (request()->routeIs('enseignant.soumissions*')) $activeTab = 'soumissions';
     @endphp
-    <x-navbar-horizontal :activeTab="$activeTab" />
+    @include('components.navbar-horizontal', ['activeTab' => $activeTab])
     
     <!-- Main Content -->
     @yield('content')
