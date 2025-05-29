@@ -11,7 +11,9 @@
         z-index: 1030;
         left: 0;
         top: 0;
-        padding-top: 76px;
+        padding-top: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     .sidebar .logo {
@@ -40,13 +42,14 @@
         padding: 15px 20px;
         text-decoration: none;
         transition: all 0.3s ease;
+        margin-bottom: 5px;
     }
 
     .sidebar a i {
-        margin-right: 10px;
+        margin-right: 15px;
         width: 20px;
         text-align: center;
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .sidebar a:hover,
@@ -134,34 +137,32 @@
 
 <div class="sidebar" id="sidebar">
     <div class="logo">
-        <img src="{{ asset('images/logo-placeholder.jpg') }}" alt="E-Taalim Logo">
-        <span>E-Taalim</span>
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
+        <div class="d-flex align-items-center p-3 mb-3">
+            <img src="{{ asset('images/logo-placeholder.jpg') }}" alt="E-Taalim Logo" width="35" height="35" class="me-2">
+            <span class="fw-bold">E-Taalim</span>
+        </div>
     </div>
     
-    <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.dashboard') ? 'active' : '' }}">
-        <i class="fas fa-tachometer-alt"></i> <span>Tableau de bord</span>
-    </a>
-    <a href="{{ route('enseignant.cours') }}" class="{{ request()->routeIs('enseignant.cours') ? 'active' : '' }}">
-        <i class="fas fa-book"></i> <span>Ressources Pédagogiques</span>
-    </a>
-    <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.calendar') ? 'active' : '' }}">
-        <i class="fas fa-calendar-alt"></i> <span>Calendrier</span>
-    </a>
-    <a href="{{ route('enseignant.messages') }}" class="{{ request()->routeIs('enseignant.messages') ? 'active' : '' }}">
-        <i class="fas fa-envelope"></i> <span>Messagerie</span>
-    </a>
-    <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.students') ? 'active' : '' }}">
-        <i class="fas fa-user-graduate"></i> <span>Etudiants</span>
-    </a>
-    <a href="{{ route('enseignant.profil') }}" class="{{ request()->routeIs('enseignant.profil') ? 'active' : '' }}">
-        <i class="fas fa-user"></i> <span>Profil</span>
-    </a>
-    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        <i class="fas fa-sign-out-alt"></i> <span>Se Déconnecter</span>
-    </a>
+    <div class="sidebar-links">
+        <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.dashboard') ? 'active' : '' }}">
+            <i class="bi bi-grid-1x2"></i> <span>Ressources Pédagogiques</span>
+        </a>
+        <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.calendar') ? 'active' : '' }}">
+            <i class="bi bi-calendar3"></i> <span>Calendrier</span>
+        </a>
+        <a href="{{ route('enseignant.messages') }}" class="{{ request()->routeIs('enseignant.messages') ? 'active' : '' }}">
+            <i class="bi bi-chat"></i> <span>Messagerie</span>
+        </a>
+        <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.students') ? 'active' : '' }}">
+            <i class="bi bi-people"></i> <span>Etudiants</span>
+        </a>
+        <a href="{{ route('enseignant.profil') }}" class="{{ request()->routeIs('enseignant.profil') ? 'active' : '' }}">
+            <i class="bi bi-person"></i> <span>Profil</span>
+        </a>
+        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="bi bi-box-arrow-left"></i> <span>Se Déconnecter</span>
+        </a>
+    </div>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>

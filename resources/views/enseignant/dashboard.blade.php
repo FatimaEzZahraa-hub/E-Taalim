@@ -267,7 +267,7 @@
                             </button>
                             <ul class="dropdown-menu w-100" aria-labelledby="examenDropdown">
                                 @forelse($cours as $c)
-                                    <li><a class="dropdown-item" href="{{ route('enseignant.cours.examens.create', ['coursId' => $c->id]) }}">{{ $c->titre }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('enseignant.examens.create', ['coursId' => $c->id]) }}">{{ $c->titre }}</a></li>
                                 @empty
                                     <li><span class="dropdown-item text-muted">Aucun cours disponible</span></li>
                                 @endforelse

@@ -14,6 +14,22 @@ use Illuminate\Support\Facades\Storage;
 
 class EnseignantController extends Controller
 {
+    // Méthode statique pour obtenir les cours de l'utilisateur actuel (pour les composants)
+    public static function getCoursForCurrentUser()
+    {
+        // Créer une collection fictive de cours pour le mode démo
+        $cours = collect();
+        
+        // Ajouter quelques cours fictifs
+        for ($i = 1; $i <= 5; $i++) {
+            $course = new \stdClass();
+            $course->id = $i;
+            $course->titre = 'Cours ' . $i;
+            $cours->push($course);
+        }
+        
+        return $cours;
+    }
     // Méthode utilitaire pour obtenir les classes disponibles pour l'enseignant
     private function getClasses()
     {

@@ -51,10 +51,10 @@ Route::prefix('enseignant')->name('enseignant.')->group(function () {
     Route::delete('/cours/{coursId}/travaux-devoirs/{id}', [EnseignantController::class, 'deleteTravailDevoir'])->name('travaux_devoirs.delete');
     
     // Examens
-    Route::get('/cours/{coursId}/examens', [EnseignantController::class, 'examens'])->name('cours.examens');
-    Route::get('/cours/{coursId}/examens/create', [EnseignantController::class, 'createExamen'])->name('cours.examens.create');
-    Route::post('/cours/{coursId}/examens', [EnseignantController::class, 'storeExamen'])->name('cours.examens.store');
     Route::get('/examens', [EnseignantController::class, 'allExamens'])->name('examens');
+    Route::get('/cours/{coursId}/examens/create', [EnseignantController::class, 'createExamen'])->name('examens.create');
+    Route::get('/cours/{coursId}/examens', [EnseignantController::class, 'examens'])->name('cours.examens');
+    Route::post('/cours/{coursId}/examens', [EnseignantController::class, 'storeExamen'])->name('cours.examens.store');
     Route::get('/cours/{coursId}/examens/{id}/edit', [EnseignantController::class, 'editExamen'])->name('cours.examens.edit');
     Route::put('/cours/{coursId}/examens/{id}', [EnseignantController::class, 'updateExamen'])->name('cours.examens.update');
     Route::delete('/cours/{coursId}/examens/{id}', [EnseignantController::class, 'deleteExamen'])->name('cours.examens.delete');

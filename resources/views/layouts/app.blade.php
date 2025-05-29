@@ -345,97 +345,152 @@
     }
   </style>
   @yield('styles')
+  
+  <style>
+    /* Different layout styles for teacher vs public pages */
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+    
+    /* Teacher layout - no top padding */
+    body.teacher-layout {
+      padding-top: 0 !important;
+      display: flex;
+    }
+    
+    /* Public layout - with top navbar */
+    body.public-layout {
+      padding-top: 76px;
+    }
+    
+    /* Content wrapper for teacher pages */
+    .teacher-content {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    /* Content wrapper for public pages */
+    .public-content {
+      width: 100%;
+      min-height: calc(100vh - 76px);
+    }
+  </style>
 </head>
-<body>
+
+@if(request()->is('enseignant*'))
+<!-- Teacher Layout - No top navbar, only sidebar -->
+<body class="teacher-layout">
+  <!-- Sidebar Component -->
+  <x-sidebar activeRoute="{{ request()->route()->getName() }}" />
+  
+  <!-- Main Content -->
+  <div class="teacher-content">
+    <!-- Flash Messages -->
+    @if(session('success'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+    
+    @if(session('error'))
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+    
+    <!-- Navbar Horizontal (uniquement pour les pages enseignant) -->
+    @php
+      $activeTab = 'cours';
+      if (request()->routeIs('enseignant.travaux*')) $activeTab = 'travaux';
+      if (request()->routeIs('enseignant.examens*')) $activeTab = 'examens';
+      if (request()->routeIs('enseignant.soumissions*')) $activeTab = 'soumissions';
+    @endphp
+    <x-navbar-horizontal :activeTab="$activeTab" />
+    
+    <!-- Main Content -->
+    @yield('content')
+  </div>
+@else
+<!-- Public Layout - With top navbar -->
+<body class="public-layout">
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="/">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" width="35" height="35" onerror="this.src='{{ asset('images/logo-placeholder.jpg') }}'">
-            E-Taalim
-        </a>
+      <a class="navbar-brand" href="/">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" width="35" height="35" onerror="this.src='{{ asset('images/logo-placeholder.jpg') }}'">
+        E-Taalim
+      </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar" aria-controls="menuNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar" aria-controls="menuNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse" id="menuNavbar">
-            <ul class="navbar-nav ms-auto">
-                @guest
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>Connexion
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">
-                            <i class="bi bi-person-plus me-1"></i>Inscription
-                        </a>
-                    </li>
-                @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
-                        </a>
-                    </li>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                @endguest
-            </ul>
-        </div>
+      <div class="collapse navbar-collapse" id="menuNavbar">
+        <ul class="navbar-nav ms-auto">
+          @guest
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('login') }}">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Connexion
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('register') }}">
+                <i class="bi bi-person-plus me-1"></i>Inscription
+              </a>
+            </li>
+          @else
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
+              </a>
+            </li>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+            </form>
+          @endguest
+        </ul>
+      </div>
     </div>
   </nav>
-
-  <!-- Sidebar Component (seulement pour les enseignants authentifiés) -->
-  @auth
-    @if(auth()->user()->estEnseignant())
-        <x-sidebar activeRoute="{{ request()->route()->getName() }}" />
-    @endif
-  @endauth
   
-  <!-- Contenu -->
-  <main>
-    <div class="content-wrapper" id="content-wrapper">
-        <!-- Flash Messages -->
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+  <!-- Main Content -->
+  <div class="public-content container py-4">
+    <!-- Flash Messages -->
+    @if(session('success'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+    
+    @if(session('error'))
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+    
+    <!-- Main Content -->
+    @yield('content')
+  </div>
+@endif
         
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        
-        <!-- Navbar Horizontal (uniquement pour les pages enseignant) -->
-        @if(auth()->check() && auth()->user()->estEnseignant() && request()->segment(1) == 'enseignant')
-            @php
-                $activeTab = 'cours';
-                if (request()->routeIs('enseignant.travaux*')) $activeTab = 'travaux';
-                if (request()->routeIs('enseignant.examens*')) $activeTab = 'examens';
-                if (request()->routeIs('enseignant.soumissions*')) $activeTab = 'soumissions';
-            @endphp
-            <x-navbar-horizontal :activeTab="$activeTab" />
-        @endif
-        
-        <!-- Main Content -->
-        @yield('content')
-    </div>
-  </main>
-
   <!-- JavaScript pour animations -->
   <script>
     // Navbar scroll effect
     window.addEventListener('scroll', function() {
       const navbar = document.querySelector('.navbar');
-      if (window.scrollY > 50) {
+      if (navbar && window.scrollY > 50) {
         navbar.classList.add('scrolled');
-      } else {
+      } else if (navbar) {
         navbar.classList.remove('scrolled');
       }
     });
@@ -451,22 +506,15 @@
             observer.unobserve(entry.target);
           }
         });
-      }, {
-        threshold: 0.1
-      });
-
+      }, { threshold: 0.1 });
+      
       fadeElements.forEach(element => {
         observer.observe(element);
       });
     });
-
-    // Navbar height adjustment
-    window.addEventListener('DOMContentLoaded', () => {
-      const navHeight = document.querySelector('.navbar').offsetHeight;
-      document.body.style.paddingTop = navHeight + 'px';
-    });
   </script>
-  
+
+  @stack('scripts')
   <!-- Scripts additionnels -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   @yield('scripts')

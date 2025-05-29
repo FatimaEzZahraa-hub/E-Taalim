@@ -110,9 +110,34 @@
             <a href="{{ route('enseignant.travaux.create') }}">
                 <i class="fas fa-tasks me-2"></i> Travail/Devoir
             </a>
-            <a href="{{ route('enseignant.examens.create') }}">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#selectCoursModal">
                 <i class="fas fa-clipboard-check me-2"></i> Examen
             </a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour sélectionner un cours pour créer un examen -->
+<div class="modal fade" id="selectCoursModal" tabindex="-1" aria-labelledby="selectCoursModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectCoursModalLabel">Sélectionner un cours</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Veuillez sélectionner un cours pour créer un examen :</p>
+                <div class="list-group">
+                    @foreach(\App\Http\Controllers\EnseignantController::getCoursForCurrentUser() as $cours)
+                        <a href="{{ route('enseignant.examens.create', ['coursId' => $cours->id]) }}" class="list-group-item list-group-item-action">
+                            {{ $cours->titre }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
         </div>
     </div>
 </div>
