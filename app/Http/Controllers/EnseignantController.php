@@ -146,15 +146,16 @@ class EnseignantController extends Controller
     public function profil()
     {
         // Créer un objet enseignant fictif pour le mode démo sans accéder à la base de données
-        $enseignant = new \stdClass();
-        $enseignant->id = 1;
-        $enseignant->nom = 'Enseignant';
-        $enseignant->prenom = 'Test';
-        $enseignant->telephone = '0600000000';
-        $enseignant->photo = null;
-        $enseignant->code = 'default_code'; // Added code property to $enseignant initialization
+        $user = new \stdClass();
+        $user->id = 1;
+        $user->nom = 'Enseignant';
+        $user->prenom = 'Test';
+        $user->email = 'enseignant@etaalim.com';
+        $user->telephone = '0600000000';
+        $user->photo = null;
+        $user->code = 'default_code';
         
-        return view('enseignant.profil', compact('enseignant'));
+        return view('enseignant.profil.index', compact('user'));
     }
     
     public function updateProfil(Request $request)
@@ -173,6 +174,19 @@ class EnseignantController extends Controller
         }
         
         return redirect()->route('enseignant.profil')->with('success', 'Profil mis à jour avec succès (mode démo)');
+    }
+    
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        
+        // En mode démo, nous ne changeons pas réellement le mot de passe
+        // Dans une application réelle, nous vérifierions le mot de passe actuel et mettrions à jour le nouveau
+        
+        return redirect()->route('enseignant.profil')->with('success', 'Mot de passe mis à jour avec succès (mode démo)');
     }
     
     // Gestion des cours
@@ -712,8 +726,7 @@ class EnseignantController extends Controller
      */
     public function chat()
     {
-        // Dans une implémentation réelle, vous récupéreriez la liste des contacts et des messages
-        // Pour cette démo, nous utilisons des données statiques
+        // Dans une implémentation réelle, vous récupéreriez les conversations de l'enseignant
         
         return view('enseignant.chat.index');
     }
@@ -725,12 +738,135 @@ class EnseignantController extends Controller
     {
         // Exemple d'événements pour démonstration
         $events = [
-            ['id' => 1, 'title' => 'Hackathon IA', 'date' => '2025-02-24', 'time' => '09:00', 'description' => 'Hackathon sur l\'intelligence artificielle organisé par l\'université.'],
-            ['id' => 2, 'title' => 'Examen Final', 'date' => '2025-02-28', 'time' => '14:00', 'description' => 'Examen final du module Programmation Web.'],
-            ['id' => 3, 'title' => 'Réunion Pédagogique', 'date' => '2025-02-15', 'time' => '10:30', 'description' => 'Réunion avec l\'ensemble des enseignants du département.'],
+            (object) ['id' => 1, 'title' => 'Hackathon IA', 'date' => '2025-02-24', 'time' => '09:00', 'description' => 'Hackathon sur l\'intelligence artificielle organisé par l\'université.'],
+            (object) ['id' => 2, 'title' => 'Examen Final', 'date' => '2025-02-28', 'time' => '14:00', 'description' => 'Examen final du module Programmation Web.'],
+            (object) ['id' => 3, 'title' => 'Réunion Pédagogique', 'date' => '2025-02-15', 'time' => '10:30', 'description' => 'Réunion avec l\'ensemble des enseignants du département.'],
         ];
         
         return view('enseignant.calendrier.index', compact('events'));
+    }
+    
+    /**
+     * Affiche la page des notifications
+     */
+    public function notifications(Request $request)
+    {
+        // Dans une implémentation réelle, vous récupéreriez les notifications de l'enseignant depuis la base de données
+        // Pour l'instant, nous utilisons des données statiques pour la démonstration
+        
+        // Créer un tableau de notifications fictives
+        $notificationsData = [
+            (object) [
+                'id' => 1,
+                'type' => 'soumission',
+                'titre' => 'Nouvelle soumission',
+                'contenu' => 'L\'\u00e9tudiant <strong>Ahmed Benani</strong> a soumis son devoir pour le cours <strong>Mathématiques Avancées</strong>.',
+                'date' => now()->subHours(2),
+                'lu' => false,
+                'icone' => 'bi-file-earmark-text',
+                'couleur' => 'primary'
+            ],
+            (object) [
+                'id' => 2,
+                'type' => 'evenement',
+                'titre' => 'Nouvel événement planifié',
+                'contenu' => 'L\'administration a planifié une <strong>réunion pédagogique</strong> pour le 5 juin 2025 à 14h00.',
+                'date' => now()->subHours(5),
+                'lu' => false,
+                'icone' => 'bi-calendar-event',
+                'couleur' => 'info'
+            ],
+            (object) [
+                'id' => 3,
+                'type' => 'message',
+                'titre' => 'Nouveau message',
+                'contenu' => 'Vous avez reçu un message de <strong>Directeur Académique</strong> concernant le programme du semestre prochain.',
+                'date' => now()->subDay(),
+                'lu' => true,
+                'icone' => 'bi-envelope',
+                'couleur' => 'success'
+            ],
+            (object) [
+                'id' => 4,
+                'type' => 'soumission',
+                'titre' => 'Soumission en retard',
+                'contenu' => 'L\'\u00e9tudiant <strong>Karim Alaoui</strong> a soumis son devoir en retard pour le cours <strong>Physique Quantique</strong>.',
+                'date' => now()->subDays(2),
+                'lu' => true,
+                'icone' => 'bi-exclamation-triangle',
+                'couleur' => 'warning'
+            ],
+            (object) [
+                'id' => 5,
+                'type' => 'administratif',
+                'titre' => 'Information administrative',
+                'contenu' => 'Les notes finales doivent être soumises avant le 15 juin 2025. Veuillez compléter toutes les évaluations.',
+                'date' => now()->subDays(3),
+                'lu' => true,
+                'icone' => 'bi-building',
+                'couleur' => 'secondary'
+            ],
+            (object) [
+                'id' => 6,
+                'type' => 'soumission',
+                'titre' => 'Nouvelle soumission',
+                'contenu' => 'L\'\u00e9tudiant <strong>Fatima Zahra</strong> a soumis son devoir pour le cours <strong>Programmation Web</strong>.',
+                'date' => now()->subDays(4),
+                'lu' => true,
+                'icone' => 'bi-file-earmark-text',
+                'couleur' => 'primary'
+            ],
+            (object) [
+                'id' => 7,
+                'type' => 'evenement',
+                'titre' => 'Rappel d\'\u00e9vénement',
+                'contenu' => 'Rappel : La <strong>cérémonie de remise des diplômes</strong> aura lieu le 20 juin 2025.',
+                'date' => now()->subDays(5),
+                'lu' => true,
+                'icone' => 'bi-calendar-event',
+                'couleur' => 'info'
+            ],
+            (object) [
+                'id' => 8,
+                'type' => 'message',
+                'titre' => 'Nouveau message',
+                'contenu' => 'Vous avez reçu un message de <strong>Service Technique</strong> concernant la maintenance des équipements informatiques.',
+                'date' => now()->subDays(6),
+                'lu' => true,
+                'icone' => 'bi-envelope',
+                'couleur' => 'success'
+            ],
+        ];
+        
+        // Filtrer les notifications si nécessaire
+        $filter = $request->query('filter', 'all');
+        $filteredNotifications = collect($notificationsData);
+        
+        if ($filter === 'unread') {
+            $filteredNotifications = $filteredNotifications->where('lu', false);
+        } elseif (in_array($filter, ['soumission', 'evenement', 'message', 'administratif'])) {
+            $filteredNotifications = $filteredNotifications->where('type', $filter);
+        }
+        
+        // Paginer les résultats
+        $perPage = 5;
+        $page = $request->query('page', 1);
+        $offset = ($page - 1) * $perPage;
+        
+        $total = $filteredNotifications->count();
+        $lastPage = ceil($total / $perPage);
+        
+        $notifications = $filteredNotifications->slice($offset, $perPage)->values();
+        
+        $pagination = [
+            'current_page' => (int)$page,
+            'last_page' => $lastPage,
+            'per_page' => $perPage,
+            'total' => $total,
+            'path' => route('enseignant.notifications'),
+        ];
+        
+        return view('enseignant.notifications.index', compact('notifications', 'pagination', 'filter'));
     }
     
     /**

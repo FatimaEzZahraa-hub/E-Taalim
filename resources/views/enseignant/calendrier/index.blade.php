@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Calendrier - E-Taalim')
+@section('title', 'Calendrier')
 
 @section('styles')
 <style>
@@ -196,11 +196,6 @@
 
 @section('content')
 <div class="container py-4">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4">Calendrier</h1>
-        </div>
-    </div>
     
     <div class="row">
         <div class="col-lg-8">

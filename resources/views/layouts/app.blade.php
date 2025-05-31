@@ -423,7 +423,39 @@
       margin-left: 250px;
       width: calc(100% - 250px);
       min-height: 100vh;
-      padding: 20px;
+      padding: 20px 30px;
+      background-color: #f8f9fa;
+    }
+    
+    /* Header styles */
+    .teacher-header {
+      margin-bottom: 25px;
+    }
+    
+    .teacher-header .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    .notification-bell a {
+      font-size: 1.2rem;
+      color: #555;
+      transition: all 0.3s ease;
+    }
+    
+    .notification-bell a:hover {
+      color: #8668FF;
+    }
+    
+    .user-avatar {
+      border: 2px solid #8668FF;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .user-info {
+      font-size: 0.9rem;
     }
     
     /* Content wrapper for public pages */
@@ -442,6 +474,34 @@
   
   <!-- Main Content -->
   <div class="teacher-content">
+    <!-- Header -->
+    <div class="teacher-header mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="header-title">
+              <h1 class="page-title mb-0">@yield('title', 'Tableau de bord')</h1>
+            </div>
+            <div class="header-actions d-flex align-items-center">
+              <div class="notification-bell me-4 position-relative">
+                <a href="#" class="text-dark">
+                  <i class="bi bi-bell-fill fs-5"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    2
+                  </span>
+                </a>
+              </div>
+              <div class="user-profile">
+                <a href="{{ route('enseignant.profil') }}" class="user-avatar rounded-circle overflow-hidden d-block" style="width: 40px; height: 40px;">
+                  <img src="{{ asset('images/user-placeholder.jpg') }}" alt="User Profile" class="w-100 h-100" style="object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=US&background=8668FF&color=fff'">
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Flash Messages -->
     @if(session('success'))
       <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -456,15 +516,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     @endif
-    
-    <!-- Navbar Horizontal (uniquement pour les pages enseignant) -->
-    @php
-      $activeTab = 'cours';
-      if (request()->routeIs('enseignant.travaux*')) $activeTab = 'travaux';
-      if (request()->routeIs('enseignant.examens*')) $activeTab = 'examens';
-      if (request()->routeIs('enseignant.soumissions*')) $activeTab = 'soumissions';
-    @endphp
-    @include('components.navbar-horizontal', ['activeTab' => $activeTab])
     
     <!-- Main Content -->
     @yield('content')

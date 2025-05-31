@@ -19,8 +19,9 @@
     .sidebar .logo {
         display: flex;
         align-items: center;
-        padding: 15px 20px;
-        margin-bottom: 20px;
+        justify-content: center;
+        padding: 20px;
+        margin-bottom: 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
@@ -30,85 +31,54 @@
     }
 
     .sidebar .logo span {
-        font-size: 18px;
-        font-weight: 600;
+        font-size: 20px;
+        font-weight: 700;
         color: white;
+    }
+
+    .sidebar .subtitle {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        margin-top: -5px;
+        margin-bottom: 20px;
     }
 
     .sidebar a {
         color: white;
         display: flex;
         align-items: center;
-        padding: 15px 20px;
+        padding: 12px 20px;
         text-decoration: none;
         transition: all 0.3s ease;
-        margin-bottom: 5px;
+        margin: 5px 10px;
+        border-radius: 10px;
     }
 
     .sidebar a i {
         margin-right: 15px;
         width: 20px;
         text-align: center;
-        font-size: 20px;
+        font-size: 18px;
     }
 
-    .sidebar a:hover,
+    .sidebar a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
     .sidebar a.active {
         background-color: white;
         color: #8668FF;
-        border-radius: 0 30px 30px 0;
+        font-weight: 600;
     }
 
-    .sidebar.collapsed {
-        width: 70px;
-    }
-
-    .sidebar.collapsed .logo span {
-        display: none;
-    }
-
-    .sidebar.collapsed a span {
-        display: none;
-    }
-
-    .sidebar.collapsed a {
-        justify-content: center;
-        padding: 15px;
-    }
-
-    .sidebar.collapsed a i {
-        margin-right: 0;
-    }
-
-    .content-wrapper {
-        margin-left: 250px;
-        transition: all 0.3s ease;
-        padding: 20px;
-        min-height: calc(100vh - 60px);
-    }
-
-    .content-wrapper.collapsed {
-        margin-left: 70px;
-    }
-
-    .toggle-btn {
-        position: absolute;
-        right: -10px;
-        top: 15px;
-        background: white;
-        color: #8668FF;
-        border: none;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
+    .sidebar-links {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        z-index: 1100;
+        flex-direction: column;
+        flex: 1;
     }
+    
+
 
     @media (max-width: 768px) {
         .sidebar {
@@ -116,6 +86,7 @@
         }
 
         .sidebar .logo span,
+        .sidebar .subtitle,
         .sidebar a span {
             display: none;
         }
@@ -137,66 +108,44 @@
 
 <div class="sidebar" id="sidebar">
     <div class="logo">
-        <div class="d-flex align-items-center p-3 mb-3">
-            <img src="{{ asset('images/logo-placeholder.jpg') }}" alt="E-Taalim Logo" width="35" height="35" class="me-2">
-            <span class="fw-bold">E-Taalim</span>
-        </div>
+        <img src="{{ asset('images/logo-placeholder.jpg') }}" alt="E-Taalim Logo" width="35" height="35" class="me-2">
+        <span>E-Taalim</span>
     </div>
+    <div class="subtitle">Interface Enseignant</div>
     
     <div class="sidebar-links">
         <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.dashboard') ? 'active' : '' }}">
-            <i class="bi bi-grid-1x2"></i> <span>Ressources Pédagogiques</span>
+            <i class="bi bi-grid-1x2"></i> <span>Tableau de bord</span>
         </a>
-        <a href="{{ route('enseignant.calendrier') }}" class="{{ request()->routeIs('enseignant.calendrier') ? 'active' : '' }}">
-            <i class="bi bi-calendar3"></i> <span>Calendrier</span>
-        </a>
-        <a href="{{ route('enseignant.messages') }}" class="{{ request()->routeIs('enseignant.messages') ? 'active' : '' }}">
-            <i class="bi bi-envelope"></i> <span>Messagerie</span>
-        </a>
-        <a href="{{ route('enseignant.chat') }}" class="{{ request()->routeIs('enseignant.chat') ? 'active' : '' }}">
-            <i class="bi bi-chat-dots-fill"></i> <span>Chat</span>
+        <a href="{{ route('enseignant.cours') }}" class="{{ request()->routeIs('enseignant.cours') ? 'active' : '' }}">
+            <i class="bi bi-book"></i> <span>Cours</span>
         </a>
         <a href="{{ route('enseignant.etudiants') }}" class="{{ request()->routeIs('enseignant.etudiants') ? 'active' : '' }}">
-            <i class="bi bi-people"></i> <span>Etudiants</span>
+            <i class="bi bi-mortarboard"></i> <span>Étudiants</span>
+        </a>
+        <a href="{{ route('enseignant.calendrier') }}" class="{{ request()->routeIs('enseignant.calendrier') ? 'active' : '' }}">
+            <i class="bi bi-calendar-event"></i> <span>Événements</span>
+        </a>
+        <a href="{{ route('enseignant.messages') }}" class="{{ request()->routeIs('enseignant.messages') ? 'active' : '' }}">
+            <i class="bi bi-envelope"></i> <span>Messages</span>
+        </a>
+        <a href="{{ route('enseignant.notifications') }}" class="{{ request()->routeIs('enseignant.notifications') ? 'active' : '' }}">
+            <i class="bi bi-bell"></i> <span>Notifications</span>
         </a>
         <a href="{{ route('enseignant.profil') }}" class="{{ request()->routeIs('enseignant.profil') ? 'active' : '' }}">
             <i class="bi bi-person"></i> <span>Profil</span>
         </a>
         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="bi bi-box-arrow-left"></i> <span>Se Déconnecter</span>
+            <i class="bi bi-box-arrow-left"></i> <span>Déconnexion</span>
         </a>
     </div>
+    
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
 </div>
 
 <script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const contentWrapper = document.getElementById('content-wrapper');
-        const toggleBtn = document.querySelector('.toggle-btn i');
-        
-        sidebar.classList.toggle('collapsed');
-        if (contentWrapper) {
-            contentWrapper.classList.toggle('collapsed');
-        }
-        
-        // Change l'icône du bouton toggle
-        if (sidebar.classList.contains('collapsed')) {
-            toggleBtn.classList.remove('fa-chevron-left');
-            toggleBtn.classList.add('fa-chevron-right');
-        } else {
-            toggleBtn.classList.remove('fa-chevron-right');
-            toggleBtn.classList.add('fa-chevron-left');
-        }
-        
-        // Sauvegarder l'état dans le localStorage
-        const isCollapsed = sidebar.classList.contains('collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
-    }
-
-    // Restaurer l'état de la sidebar au chargement de la page
     document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('sidebar');
         const contentWrapper = document.getElementById('content-wrapper');

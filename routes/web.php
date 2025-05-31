@@ -36,6 +36,7 @@ Route::prefix('enseignant')->name('enseignant.')->group(function () {
     // Profil
     Route::get('/profil', [EnseignantController::class, 'profil'])->name('profil');
     Route::post('/profil', [EnseignantController::class, 'updateProfil'])->name('profil.update');
+    Route::post('/profil/password', [EnseignantController::class, 'updatePassword'])->name('profil.password');
     
     // Cours
     Route::get('/cours', [EnseignantController::class, 'cours'])->name('cours');
@@ -81,4 +82,7 @@ Route::prefix('enseignant')->name('enseignant.')->group(function () {
     
     // Calendrier
     Route::get('/calendrier', [EnseignantController::class, 'calendrier'])->name('calendrier');
+    
+    // Notifications
+    Route::get('/notifications', [EnseignantController::class, 'notifications'])->name('notifications');
 });

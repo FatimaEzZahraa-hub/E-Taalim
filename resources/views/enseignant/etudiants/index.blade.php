@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Étudiants')
+
 @section('content')
 <div class="container-fluid mt-4">
     <div class="row align-items-center mb-4">
