@@ -1,0 +1,115 @@
+[1mdiff --git a/app/Http/Controllers/EtudiantController.php b/app/Http/Controllers/EtudiantController.php[m
+[1mindex da8223a..f3b62d5 100644[m
+[1m--- a/app/Http/Controllers/EtudiantController.php[m
+[1m+++ b/app/Http/Controllers/EtudiantController.php[m
+[36m@@ -319,7 +319,7 @@[m [mpublic function storeMessage(Request $request)[m
+     {[m
+         // Validation des données du formulaire[m
+         $request->validate([[m
+[31m-            'destinataire_id' => 'required|integer',[m
+[32m+[m[32m            'destinataire' => 'required|integer',[m
+             'sujet' => 'required|string|max:255',[m
+             'contenu' => 'required|string',[m
+             'pieces_jointes.*' => 'file|max:10240' // 10MB max par fichier[m
+[1mdiff --git a/resources/views/etudiant/messages/create.blade.php b/resources/views/etudiant/messages/create.blade.php[m
+[1mindex f76d927..31fa671 100644[m
+[1m--- a/resources/views/etudiant/messages/create.blade.php[m
+[1m+++ b/resources/views/etudiant/messages/create.blade.php[m
+[36m@@ -1,27 +1,30 @@[m
+ @extends('layouts.app')[m
+ [m
+[31m-@section('title', 'Nouveau message')[m
+[32m+[m[32m@section('title', 'Nouveau Message')[m
+ [m
+ @section('content')[m
+ <div class="container-fluid py-4">[m
+[31m-    <nav aria-label="breadcrumb">[m
+[31m-        <ol class="breadcrumb">[m
+[31m-            <li class="breadcrumb-item"><a href="{{ route('etudiant.messages') }}">Messages</a></li>[m
+[31m-            <li class="breadcrumb-item active" aria-current="page">Nouveau message</li>[m
+[31m-        </ol>[m
+[31m-    </nav>[m
+[31m-[m
+[31m-    <div class="card shadow-sm border-0">[m
+[31m-        <div class="card-header bg-white py-3">[m
+[31m-            <h1 class="h3 mb-0">Nouveau message</h1>[m
+[32m+[m[32m    <div class="d-flex justify-content-between align-items-center mb-4">[m
+[32m+[m[32m        <div class="d-flex align-items-center">[m
+[32m+[m[32m            <a href="{{ route('etudiant.messages') }}" class="btn btn-light rounded-circle shadow-sm me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">[m
+[32m+[m[32m                <i class="bi bi-arrow-left"></i>[m
+[32m+[m[32m            </a>[m
+[32m+[m[32m            <div>[m
+[32m+[m[32m                <h1 class="h3 fw-bold mb-1" style="color: #333;">Nouveau Message</h1>[m
+[32m+[m[32m                <p class="text-muted mb-0">Contactez vos enseignants</p>[m
+[32m+[m[32m            </div>[m
+         </div>[m
+[31m-        <div class="card-body">[m
+[32m+[m[32m    </div>[m
+[32m+[m
+[32m+[m[32m    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">[m
+[32m+[m[32m        <div class="card-body p-4 p-lg-5">[m
+             <form action="{{ route('etudiant.messages.store') }}" method="POST" enctype="multipart/form-data">[m
+                 @csrf[m
+[31m-                <div class="mb-3">[m
+[31m-                    <label for="destinataire" class="form-label">Destinataire</label>[m
+[31m-                    <select class="form-select @error('destinataire') is-invalid @enderror" id="destinataire" name="destinataire" required>[m
+[31m-                        <option value="">Su00e9lectionner un enseignant</option>[m
+[32m+[m[41m                [m
+[32m+[m[32m                <div class="mb-4">[m
+[32m+[m[32m                    <label for="destinataire" class="form-label fw-medium mb-2">Destinataire</label>[m
+[32m+[m[32m                    <select class="form-select form-select-lg @error('destinataire') is-invalid @enderror" id="destinataire" name="destinataire" required style="border-radius: 12px; padding: 0.75rem 1.25rem; border-color: #e0e0e0;">[m
+[32m+[m[32m                        <option value="">Sélectionner un enseignant</option>[m
+                         @foreach($enseignants as $enseignant)[m
+                             <option value="{{ $enseignant->id }}" {{ old('destinataire') == $enseignant->id ? 'selected' : '' }}>[m
+                                 {{ $enseignant->titre }} {{ $enseignant->nom }} {{ $enseignant->prenom }} - {{ $enseignant->matiere }}[m
+[36m@@ -32,38 +35,40 @@[m
+                         <div class="invalid-feedback">{{ $message }}</div>[m
+                     @enderror[m
+                 </div>[m
+[31m-[m
+[31m-                <div class="mb-3">[m
+[31m-                    <label for="sujet" class="form-label">Sujet</label>[m
+[31m-                    <input type="text" class="form-control @error('sujet') is-invalid @enderror" id="sujet" name="sujet" value="{{ old('sujet') }}" required>[m
+[32m+[m[41m                [m
+[32m+[m[32m                <div class="mb-4">[m
+[32m+[m[32m                    <label for="sujet" class="form-label fw-medium mb-2">Sujet</label>[m
+[32m+[m[32m                    <input type="text" class="form-control form-control-lg @error('sujet') is-invalid @enderror" id="sujet" name="sujet" value="{{ old('sujet') }}" required style="border-radius: 12px; padding: 0.75rem 1.25rem; border-color: #e0e0e0;">[m
+                     @error('sujet')[m
+                         <div class="invalid-feedback">{{ $message }}</div>[m
+                     @enderror[m
+                 </div>[m
+ [m
+[31m-                <div class="mb-3">[m
+[31m-                    <label for="contenu" class="form-label">Message</label>[m
+[31m-                    <textarea class="form-control @error('contenu') is-invalid @enderror" id="contenu" name="contenu" rows="8" required>{{ old('contenu') }}</textarea>[m
+[32m+[m[32m                <div class="mb-4">[m
+[32m+[m[32m                    <label for="contenu" class="form-label fw-medium mb-2">Message</label>[m
+[32m+[m[32m                    <textarea class="form-control form-control-lg @error('contenu') is-invalid @enderror" id="contenu" name="contenu" rows="8" required style="border-radius: 12px; padding: 0.75rem 1.25rem; border-color: #e0e0e0; min-height: 200px;">{{ old('contenu') }}</textarea>[m
+                     @error('contenu')[m
+                         <div class="invalid-feedback">{{ $message }}</div>[m
+                     @enderror[m
+                 </div>[m
+ [m
+[31m-                <div class="mb-3">[m
+[31m-                    <label for="pieces_jointes" class="form-label">Piu00e8ces jointes (optionnel)</label>[m
+[31m-                    <input class="form-control @error('pieces_jointes') is-invalid @enderror" type="file" id="pieces_jointes" name="pieces_jointes[]" multiple>[m
+[31m-                    <div class="form-text">Vous pouvez su00e9lectionner plusieurs fichiers. Taille maximale par fichier: 5MB.</div>[m
+[32m+[m[32m                <div class="mb-4">[m
+[32m+[m[32m                    <label for="pieces_jointes" class="form-label fw-medium mb-2">Pièces jointes (optionnel)</label>[m
+[32m+[m[32m                    <div class="input-group">[m
+[32m+[m[32m                        <input class="form-control form-control-lg @error('pieces_jointes') is-invalid @enderror" type="file" id="pieces_jointes" name="pieces_jointes[]" multiple style="border-radius: 12px; padding: 0.75rem 1.25rem; border-color: #e0e0e0;">[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <div class="form-text mt-2">Vous pouvez sélectionner plusieurs fichiers. Taille maximale par fichier: 5MB.</div>[m
+                     @error('pieces_jointes')[m
+                         <div class="invalid-feedback">{{ $message }}</div>[m
+                     @enderror[m
+                 </div>[m
+ [m
+[31m-                <div class="d-flex justify-content-between">[m
+[31m-                    <a href="{{ route('etudiant.messages') }}" class="btn btn-outline-secondary">[m
+[31m-                        <i class="bi bi-arrow-left me-1"></i> Retour[m
+[32m+[m[32m                <div class="d-flex justify-content-end mt-5">[m
+[32m+[m[32m                    <a href="{{ route('etudiant.messages') }}" class="btn btn-light rounded-pill px-4 py-2 me-3" style="font-weight: 500;">[m
+[32m+[m[32m                        Annuler[m
+                     </a>[m
+[
