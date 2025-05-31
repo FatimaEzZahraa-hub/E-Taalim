@@ -199,10 +199,10 @@ class EnseignantController extends Controller
         $classeId = $request->query('classe_id');
         
         // Créer une collection fictive de cours
-        $cours = collect();
+        $allCours = collect();
         
-        // Ajouter quelques cours fictifs
-        for ($i = 1; $i <= 10; $i++) {
+        // Ajouter plus de cours fictifs pour démontrer la pagination
+        for ($i = 1; $i <= 50; $i++) {
             $course = new \stdClass();
             $course->id = $i;
             $course->titre = 'Cours ' . $i;
@@ -213,11 +213,45 @@ class EnseignantController extends Controller
             $classe = $classes[$classeIndex];
             $course->classe = $classe;
             
+            // Ajouter des collections vides pour les relations
+            $course->travauxDevoirs = collect([]);
+            $course->examens = collect([]);
+            
+            // Ajouter quelques travaux fictifs
+            for ($j = 1; $j <= rand(1, 3); $j++) {
+                $travail = new \stdClass();
+                $travail->id = $j;
+                $travail->titre = 'Travail ' . $j . ' pour cours ' . $i;
+                $course->travauxDevoirs->push($travail);
+            }
+            
+            // Ajouter quelques examens fictifs
+            for ($j = 1; $j <= rand(0, 2); $j++) {
+                $examen = new \stdClass();
+                $examen->id = $j;
+                $examen->titre = 'Examen ' . $j . ' pour cours ' . $i;
+                $course->examens->push($examen);
+            }
+            
             // Si un filtre de classe est appliqué, n'ajouter que les cours de cette classe
             if (!$classeId || $classe->id == $classeId) {
-                $cours->push($course);
+                $allCours->push($course);
             }
         }
+        
+        // Paginer manuellement la collection
+        $perPage = 21; // 21 éléments par page
+        $currentPage = $request->query('page', 1);
+        $currentPageItems = $allCours->forPage($currentPage, $perPage);
+        
+        // Créer un paginateur personnalisé
+        $cours = new \Illuminate\Pagination\LengthAwarePaginator(
+            $currentPageItems,
+            $allCours->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
         
         return view('enseignant.cours.index', compact('cours', 'classes', 'classeId'));
     }

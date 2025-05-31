@@ -466,8 +466,8 @@
   </style>
 </head>
 
-@if(request()->is('enseignant*'))
-<!-- Teacher Layout - No top navbar, only sidebar -->
+@if(request()->is('enseignant*') || request()->is('etudiant*'))
+<!-- Teacher/Student Layout - No top navbar, only sidebar -->
 <body class="teacher-layout">
   <!-- Sidebar Component -->
   <x-sidebar activeRoute="{{ request()->route()->getName() }}" />
@@ -484,7 +484,7 @@
             </div>
             <div class="header-actions d-flex align-items-center">
               <div class="notification-bell me-4 position-relative">
-                <a href="#" class="text-dark">
+                <a href="{{ route('enseignant.notifications') }}" class="text-dark">
                   <i class="bi bi-bell-fill fs-5"></i>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     2

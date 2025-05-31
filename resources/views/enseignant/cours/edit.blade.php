@@ -5,7 +5,6 @@
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-5 fw-bold mb-0">Modifier un Cours</h1>
         <a href="{{ route('enseignant.cours') }}" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i> Retour aux Cours
         </a>

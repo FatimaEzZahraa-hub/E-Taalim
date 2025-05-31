@@ -111,9 +111,11 @@
         <img src="{{ asset('images/logo-placeholder.jpg') }}" alt="E-Taalim Logo" width="35" height="35" class="me-2">
         <span>E-Taalim</span>
     </div>
-    <div class="subtitle">Interface Enseignant</div>
+    <div class="subtitle">{{ request()->is('etudiant*') ? 'Interface Étudiant' : 'Interface Enseignant' }}</div>
     
     <div class="sidebar-links">
+        @if(request()->is('enseignant*'))
+        <!-- Liens pour l'enseignant -->
         <a href="{{ route('enseignant.dashboard') }}" class="{{ request()->routeIs('enseignant.dashboard') ? 'active' : '' }}">
             <i class="bi bi-grid-1x2"></i> <span>Tableau de bord</span>
         </a>
@@ -138,6 +140,30 @@
         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="bi bi-box-arrow-left"></i> <span>Déconnexion</span>
         </a>
+        @else
+        <!-- Liens pour l'étudiant -->
+        <a href="{{ route('etudiant.dashboard') }}" class="{{ request()->routeIs('etudiant.dashboard') ? 'active' : '' }}">
+            <i class="bi bi-grid-1x2"></i> <span>Tableau de bord</span>
+        </a>
+        <a href="{{ route('etudiant.cours') }}" class="{{ request()->routeIs('etudiant.cours') ? 'active' : '' }}">
+            <i class="bi bi-book"></i> <span>Cours</span>
+        </a>
+        <a href="{{ route('etudiant.messages') }}" class="{{ request()->routeIs('etudiant.messages') ? 'active' : '' }}">
+            <i class="bi bi-envelope"></i> <span>Messages</span>
+        </a>
+        <a href="{{ route('etudiant.notifications') }}" class="{{ request()->routeIs('etudiant.notifications') ? 'active' : '' }}">
+            <i class="bi bi-bell"></i> <span>Notifications</span>
+        </a>
+        <a href="{{ route('etudiant.calendrier') }}" class="{{ request()->routeIs('etudiant.calendrier') ? 'active' : '' }}">
+            <i class="bi bi-calendar-event"></i> <span>Calendrier</span>
+        </a>
+        <a href="{{ route('etudiant.profil') }}" class="{{ request()->routeIs('etudiant.profil') ? 'active' : '' }}">
+            <i class="bi bi-person"></i> <span>Profil</span>
+        </a>
+        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="bi bi-box-arrow-left"></i> <span>Déconnexion</span>
+        </a>
+        @endif
     </div>
     
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
