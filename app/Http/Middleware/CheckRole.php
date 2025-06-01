@@ -9,10 +9,22 @@ class CheckRole
 {
     public function handle($request, Closure $next, ...$roles)
     {
-        if (!Auth::check() || !in_array(Auth::user()->role->nom, $roles)) {
-            abort(403, 'Accès non autorisé.');
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
 
-        return $next($request);
+        $user = Auth::user();
+        
+        // Vérifier si l'utilisateur a le rôle requis
+        if ($user->estEnseignant() && in_array('enseignant', $roles)) {
+            return $next($request);
+        }
+        
+        if ($user->estEtudiant() && in_array('etudiant', $roles)) {
+            return $next($request);
+        }
+
+        // Si l'utilisateur n'a pas le rôle requis
+        abort(403, 'Accès non autorisé.');
     }
 }
