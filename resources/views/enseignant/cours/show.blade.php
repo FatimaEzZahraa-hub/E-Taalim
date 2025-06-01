@@ -20,7 +20,7 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background-color: #8668FF; color: white;">
                     <h5 class="mb-0">Informations du cours</h5>
-                    <span class="badge bg-light text-dark">{{ isset($cours->classe) && is_object($cours->classe) ? $cours->classe->nom : 'Classe non définie' }}</span>
+                    <span class="badge bg-light text-dark">{{ isset($cours->groupe) && is_object($cours->groupe) ? $cours->groupe->nom : 'Groupe non défini' }}</span>
                 </div>
                 <div class="card-body">
                     <div class="mb-4">

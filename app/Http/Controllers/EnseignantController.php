@@ -30,29 +30,29 @@ class EnseignantController extends Controller
         
         return $cours;
     }
-    // Méthode utilitaire pour obtenir les classes disponibles pour l'enseignant
-    private function getClasses()
+    // Méthode utilitaire pour obtenir les groupes disponibles pour l'enseignant
+    private function getGroupes()
     {
-        // Créer une collection fictive de classes
-        $classes = collect();
+        // Créer une collection fictive de groupes
+        $groupes = collect();
         
-        // Ajouter quelques classes fictives
+        // Ajouter quelques groupes fictifs
         $niveaux = ['6ème', '5ème', '4ème', '3ème', '2nde', '1ère', 'Terminale'];
         $sections = ['A', 'B', 'C', 'D'];
         
         $id = 1;
         foreach ($niveaux as $niveau) {
             foreach ($sections as $section) {
-                $classe = new \stdClass();
-                $classe->id = $id++;
-                $classe->nom = $niveau . ' ' . $section;
-                $classe->niveau = $niveau;
-                $classe->section = $section;
-                $classes->push($classe);
+                $groupe = new \stdClass();
+                $groupe->id = $id++;
+                $groupe->nom = $niveau . ' ' . $section;
+                $groupe->niveau = $niveau;
+                $groupe->section = $section;
+                $groupes->push($groupe);
             }
         }
         
-        return $classes;
+        return $groupes;
     }
     
     public function dashboard(Request $request)
@@ -67,13 +67,13 @@ class EnseignantController extends Controller
         $enseignant->code = 'default_code'; // Added code property to $enseignant initialization
         $enseignant->cours = collect(); // Added cours property to $enseignant initialization
         
-        // Obtenir les classes disponibles
-        $classes = $this->getClasses();
+        // Obtenir les groupes disponibles
+        $groupes = $this->getGroupes();
         
-        // Créer une collection de cours fictifs avec différentes classes et matières
+        // Créer une collection de cours fictifs avec différents groupes et modules
         $cours = collect();
         
-        $matieres = ['Mathématiques', 'Physique', 'Chimie', 'Français', 'Histoire-Géographie', 'Anglais', 'SVT'];
+        $modules = ['Mathématiques', 'Physique', 'Chimie', 'Français', 'Histoire-Géographie', 'Anglais', 'SVT'];
         
         // Créer 15 cours fictifs
         for ($i = 1; $i <= 15; $i++) {
@@ -82,14 +82,14 @@ class EnseignantController extends Controller
             $course->titre = 'Cours ' . $i;
             $course->description = 'Description du cours ' . $i;
             
-            // Assigner une classe et une matière
-            $classeIndex = ($i % count($classes));
-            $classe = $classes[$classeIndex];
-            $course->classe = $classe;
-            $course->niveau = $classe->niveau;
+            // Assigner un groupe et un module
+            $groupeIndex = ($i % count($groupes));
+            $groupe = $groupes[$groupeIndex];
+            $course->groupe = $groupe;
+            $course->niveau = $groupe->niveau;
             
-            $matiereIndex = ($i % count($matieres));
-            $course->matiere = $matieres[$matiereIndex];
+            $moduleIndex = ($i % count($modules));
+            $course->module = $modules[$moduleIndex];
             
             // Ajouter des collections vides pour les relations
             $course->etudiants = collect([]);
@@ -124,23 +124,23 @@ class EnseignantController extends Controller
             $cours->push($course);
         }
         
-        // Filtrer par classe si spécifié
-        $classeId = $request->query('classe_id');
-        if ($classeId) {
-            $cours = $cours->filter(function($course) use ($classeId) {
-                return $course->niveau == $classeId;
+        // Filtrer par groupe si spécifié
+        $groupeId = $request->query('groupe_id');
+        if ($groupeId) {
+            $cours = $cours->filter(function($course) use ($groupeId) {
+                return $course->niveau == $groupeId;
             });
         }
         
-        // Filtrer par matière si spécifié
-        $matiereId = $request->query('matiere_id');
-        if ($matiereId) {
-            $cours = $cours->filter(function($course) use ($matiereId) {
-                return $course->matiere == $matiereId;
+        // Filtrer par module si spécifié
+        $moduleId = $request->query('module_id');
+        if ($moduleId) {
+            $cours = $cours->filter(function($course) use ($moduleId) {
+                return $course->module == $moduleId;
             });
         }
         
-        return view('enseignant.dashboard', compact('enseignant', 'cours', 'classes'));
+        return view('enseignant.dashboard', compact('enseignant', 'cours', 'groupes'));
     }
     
     public function profil()
@@ -192,11 +192,11 @@ class EnseignantController extends Controller
     // Gestion des cours
     public function cours(Request $request)
     {
-        // Obtenir les classes disponibles
-        $classes = $this->getClasses();
+        // Obtenir les groupes disponibles
+        $groupes = $this->getGroupes();
         
-        // Filtrer par classe si spécifié
-        $classeId = $request->query('classe_id');
+        // Filtrer par groupe si spécifié
+        $groupeId = $request->query('groupe_id');
         
         // Créer une collection fictive de cours
         $allCours = collect();
@@ -208,10 +208,10 @@ class EnseignantController extends Controller
             $course->titre = 'Cours ' . $i;
             $course->description = 'Description du cours ' . $i;
             
-            // Assigner une classe aléatoire à chaque cours
-            $classeIndex = ($i % count($classes));
-            $classe = $classes[$classeIndex];
-            $course->classe = $classe;
+            // Assigner un groupe aléatoire à chaque cours
+            $groupeIndex = ($i % count($groupes));
+            $groupe = $groupes[$groupeIndex];
+            $course->groupe = $groupe;
             
             // Ajouter des collections vides pour les relations
             $course->travauxDevoirs = collect([]);
@@ -233,8 +233,8 @@ class EnseignantController extends Controller
                 $course->examens->push($examen);
             }
             
-            // Si un filtre de classe est appliqué, n'ajouter que les cours de cette classe
-            if (!$classeId || $classe->id == $classeId) {
+            // Si un filtre de groupe est appliqué, n'ajouter que les cours de ce groupe
+            if (!$groupeId || $groupe->id == $groupeId) {
                 $allCours->push($course);
             }
         }
@@ -253,15 +253,15 @@ class EnseignantController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
         
-        return view('enseignant.cours.index', compact('cours', 'classes', 'classeId'));
+        return view('enseignant.cours.index', compact('cours', 'groupes', 'groupeId'));
     }
     
     public function createCours()
     {
-        // Obtenir les classes disponibles
-        $classes = $this->getClasses();
+        // Obtenir les groupes disponibles
+        $groupes = $this->getGroupes();
         
-        return view('enseignant.cours.create', compact('classes'));
+        return view('enseignant.cours.create', compact('groupes'));
     }
     
     public function storeCours(Request $request)
@@ -284,8 +284,8 @@ class EnseignantController extends Controller
     
     public function editCours($id)
     {
-        // Obtenir les classes disponibles
-        $classes = $this->getClasses();
+        // Obtenir les groupes disponibles
+        $groupes = $this->getGroupes();
         
         // Créer un objet cours fictif pour le mode démo
         $cours = new \stdClass();
@@ -511,11 +511,11 @@ class EnseignantController extends Controller
     
     public function allTravaux(Request $request)
     {
-        // Obtenir les classes disponibles
-        $classes = $this->getClasses();
+        // Obtenir les groupes disponibles
+        $groupes = $this->getGroupes();
         
-        // Filtrer par classe si spécifié
-        $classeId = $request->query('classe_id');
+        // Filtrer par groupe si spécifié
+        $groupeId = $request->query('groupe_id');
         
         // Créer une collection fictive de travaux
         $travaux = collect();
@@ -529,9 +529,9 @@ class EnseignantController extends Controller
             $travail->date_limite = now()->addDays($i);
             
             // Assigner une classe aléatoire à chaque travail
-            $classeIndex = ($i % count($classes));
-            $classe = $classes[$classeIndex];
-            $travail->classe = $classe;
+            $groupeIndex = ($i % count($groupes));
+            $groupe = $groupes[$groupeIndex];
+            $travail->groupe = $groupe;
             
             $travail->cours = new \stdClass();
             $travail->cours->id = $i;
@@ -565,11 +565,11 @@ class EnseignantController extends Controller
     
     public function allExamens(Request $request)
     {
-        // Obtenir les classes disponibles
-        $classes = $this->getClasses();
+        // Obtenir les groupes disponibles
+        $groupes = $this->getGroupes();
         
-        // Filtrer par classe si spécifié
-        $classeId = $request->query('classe_id');
+        // Filtrer par groupe si spécifié
+        $groupeId = $request->query('groupe_id');
         
         // Créer une collection fictive d'examens
         $examens = collect();
@@ -583,9 +583,9 @@ class EnseignantController extends Controller
             $examen->date_exam = now()->addDays($i * 2);
             
             // Assigner une classe aléatoire à chaque examen
-            $classeIndex = ($i % count($classes));
-            $classe = $classes[$classeIndex];
-            $examen->classe = $classe;
+            $groupeIndex = ($i % count($groupes));
+            $groupe = $groupes[$groupeIndex];
+            $examen->groupe = $groupe;
             
             $examen->cours = new \stdClass();
             $examen->cours->id = $i;
@@ -603,11 +603,11 @@ class EnseignantController extends Controller
     
     public function allSoumissions(Request $request)
     {
-        // Obtenir les classes disponibles
-        $classes = $this->getClasses();
+        // Obtenir les groupes disponibles
+        $groupes = $this->getGroupes();
         
-        // Filtrer par classe si spécifié
-        $classeId = $request->query('classe_id');
+        // Filtrer par groupe si spécifié
+        $groupeId = $request->query('groupe_id');
         
         // Créer une collection fictive de soumissions
         $soumissions = collect();
@@ -621,8 +621,8 @@ class EnseignantController extends Controller
             $soumission->commentaire = 'Commentaire sur la soumission ' . $i;
             
             // Assigner une classe aléatoire à chaque soumission
-            $classeIndex = ($i % count($classes));
-            $classe = $classes[$classeIndex];
+            $groupeIndex = ($i % count($groupes));
+            $groupe = $groupes[$groupeIndex];
             
             $soumission->etudiant = new \stdClass();
             $soumission->etudiant->id = $i;
@@ -910,28 +910,28 @@ class EnseignantController extends Controller
     {
         // Générer des étudiants fictifs pour démonstration (plus d'étudiants pour la pagination)
         $etudiantsData = [
-            (object) ['id' => 1, 'code' => 'R34678986', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Tazi', 'prenom' => 'Saad', 'email' => 'Tazi.Saad@gmail.com'],
-            (object) ['id' => 2, 'code' => 'R12678890', 'filiere' => 'ID', 'classe' => 'ID-3A', 'nom' => 'Saki', 'prenom' => 'Leila', 'email' => 'Saki.Leila@gmail.com'],
-            (object) ['id' => 3, 'code' => 'A11234567', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Alami', 'prenom' => 'Fahd', 'email' => 'Alami.Fahd@gmail.com'],
-            (object) ['id' => 4, 'code' => 'A09876543', 'filiere' => 'ID', 'classe' => 'ID-2A', 'nom' => 'Radi', 'prenom' => 'Mina', 'email' => 'Radi.Mina@gmail.com'],
-            (object) ['id' => 5, 'code' => 'R24670087', 'filiere' => 'DD', 'classe' => 'DD-1A', 'nom' => 'Soul', 'prenom' => 'Hiba', 'email' => 'Soul.Hiba@gmail.com'],
-            (object) ['id' => 6, 'code' => 'R35689012', 'filiere' => 'ID', 'classe' => 'ID-1A', 'nom' => 'Bennani', 'prenom' => 'Karim', 'email' => 'Bennani.Karim@gmail.com'],
-            (object) ['id' => 7, 'code' => 'A22345678', 'filiere' => 'GE', 'classe' => 'GE-2A', 'nom' => 'Ouazzani', 'prenom' => 'Yasmine', 'email' => 'Ouazzani.Yasmine@gmail.com'],
-            (object) ['id' => 8, 'code' => 'R45678901', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Idrissi', 'prenom' => 'Omar', 'email' => 'Idrissi.Omar@gmail.com'],
-            (object) ['id' => 9, 'code' => 'A33456789', 'filiere' => 'ID', 'classe' => 'ID-3A', 'nom' => 'Berrada', 'prenom' => 'Sara', 'email' => 'Berrada.Sara@gmail.com'],
-            (object) ['id' => 10, 'code' => 'R56789012', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Chraibi', 'prenom' => 'Mehdi', 'email' => 'Chraibi.Mehdi@gmail.com'],
-            (object) ['id' => 11, 'code' => 'A44567890', 'filiere' => 'DD', 'classe' => 'DD-1A', 'nom' => 'Tahiri', 'prenom' => 'Amine', 'email' => 'Tahiri.Amine@gmail.com'],
-            (object) ['id' => 12, 'code' => 'R67890123', 'filiere' => 'ID', 'classe' => 'ID-2A', 'nom' => 'Lahlou', 'prenom' => 'Nadia', 'email' => 'Lahlou.Nadia@gmail.com'],
-            (object) ['id' => 13, 'code' => 'A55678901', 'filiere' => 'GE', 'classe' => 'GE-2A', 'nom' => 'Benmoussa', 'prenom' => 'Youssef', 'email' => 'Benmoussa.Youssef@gmail.com'],
-            (object) ['id' => 14, 'code' => 'R78901234', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Alaoui', 'prenom' => 'Fatima', 'email' => 'Alaoui.Fatima@gmail.com'],
-            (object) ['id' => 15, 'code' => 'A66789012', 'filiere' => 'ID', 'classe' => 'ID-1A', 'nom' => 'Ziani', 'prenom' => 'Hamza', 'email' => 'Ziani.Hamza@gmail.com'],
-            (object) ['id' => 16, 'code' => 'R89012345', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Mansouri', 'prenom' => 'Imane', 'email' => 'Mansouri.Imane@gmail.com'],
-            (object) ['id' => 17, 'code' => 'A77890123', 'filiere' => 'DD', 'classe' => 'DD-1A', 'nom' => 'Bouali', 'prenom' => 'Rachid', 'email' => 'Bouali.Rachid@gmail.com'],
-            (object) ['id' => 18, 'code' => 'R90123456', 'filiere' => 'ID', 'classe' => 'ID-3A', 'nom' => 'Khalil', 'prenom' => 'Salma', 'email' => 'Khalil.Salma@gmail.com'],
-            (object) ['id' => 19, 'code' => 'A88901234', 'filiere' => 'GE', 'classe' => 'GE-2A', 'nom' => 'Hassani', 'prenom' => 'Bilal', 'email' => 'Hassani.Bilal@gmail.com'],
-            (object) ['id' => 20, 'code' => 'R01234567', 'filiere' => 'DD', 'classe' => 'DD-2A', 'nom' => 'Benjelloun', 'prenom' => 'Zineb', 'email' => 'Benjelloun.Zineb@gmail.com'],
-            (object) ['id' => 21, 'code' => 'A99012345', 'filiere' => 'ID', 'classe' => 'ID-2A', 'nom' => 'Moussaoui', 'prenom' => 'Ismail', 'email' => 'Moussaoui.Ismail@gmail.com'],
-            (object) ['id' => 22, 'code' => 'R12345678', 'filiere' => 'GE', 'classe' => 'GE-1A', 'nom' => 'Fassi', 'prenom' => 'Hajar', 'email' => 'Fassi.Hajar@gmail.com'],
+            (object) ['id' => 1, 'code' => 'R34678986', 'filiere' => 'DD', 'groupe' => 'DD-2A', 'nom' => 'Tazi', 'prenom' => 'Saad', 'email' => 'Tazi.Saad@gmail.com'],
+            (object) ['id' => 2, 'code' => 'R12678890', 'filiere' => 'ID', 'groupe' => 'ID-3A', 'nom' => 'Saki', 'prenom' => 'Leila', 'email' => 'Saki.Leila@gmail.com'],
+            (object) ['id' => 3, 'code' => 'A11234567', 'filiere' => 'GE', 'groupe' => 'GE-1A', 'nom' => 'Alami', 'prenom' => 'Fahd', 'email' => 'Alami.Fahd@gmail.com'],
+            (object) ['id' => 4, 'code' => 'A09876543', 'filiere' => 'ID', 'groupe' => 'ID-2A', 'nom' => 'Radi', 'prenom' => 'Mina', 'email' => 'Radi.Mina@gmail.com'],
+            (object) ['id' => 5, 'code' => 'R24670087', 'filiere' => 'DD', 'groupe' => 'DD-1A', 'nom' => 'Soul', 'prenom' => 'Hiba', 'email' => 'Soul.Hiba@gmail.com'],
+            (object) ['id' => 6, 'code' => 'R35689012', 'filiere' => 'ID', 'groupe' => 'ID-1A', 'nom' => 'Bennani', 'prenom' => 'Karim', 'email' => 'Bennani.Karim@gmail.com'],
+            (object) ['id' => 7, 'code' => 'A22345678', 'filiere' => 'GE', 'groupe' => 'GE-2A', 'nom' => 'Ouazzani', 'prenom' => 'Yasmine', 'email' => 'Ouazzani.Yasmine@gmail.com'],
+            (object) ['id' => 8, 'code' => 'R45678901', 'filiere' => 'DD', 'groupe' => 'DD-2A', 'nom' => 'Idrissi', 'prenom' => 'Omar', 'email' => 'Idrissi.Omar@gmail.com'],
+            (object) ['id' => 9, 'code' => 'A33456789', 'filiere' => 'ID', 'groupe' => 'ID-3A', 'nom' => 'Berrada', 'prenom' => 'Sara', 'email' => 'Berrada.Sara@gmail.com'],
+            (object) ['id' => 10, 'code' => 'R56789012', 'filiere' => 'GE', 'groupe' => 'GE-1A', 'nom' => 'Chraibi', 'prenom' => 'Mehdi', 'email' => 'Chraibi.Mehdi@gmail.com'],
+            (object) ['id' => 11, 'code' => 'A44567890', 'filiere' => 'DD', 'groupe' => 'DD-1A', 'nom' => 'Tahiri', 'prenom' => 'Amine', 'email' => 'Tahiri.Amine@gmail.com'],
+            (object) ['id' => 12, 'code' => 'R67890123', 'filiere' => 'ID', 'groupe' => 'ID-2A', 'nom' => 'Lahlou', 'prenom' => 'Nadia', 'email' => 'Lahlou.Nadia@gmail.com'],
+            (object) ['id' => 13, 'code' => 'A55678901', 'filiere' => 'GE', 'groupe' => 'GE-2A', 'nom' => 'Benmoussa', 'prenom' => 'Youssef', 'email' => 'Benmoussa.Youssef@gmail.com'],
+            (object) ['id' => 14, 'code' => 'R78901234', 'filiere' => 'DD', 'groupe' => 'DD-2A', 'nom' => 'Alaoui', 'prenom' => 'Fatima', 'email' => 'Alaoui.Fatima@gmail.com'],
+            (object) ['id' => 15, 'code' => 'A66789012', 'filiere' => 'ID', 'groupe' => 'ID-1A', 'nom' => 'Ziani', 'prenom' => 'Hamza', 'email' => 'Ziani.Hamza@gmail.com'],
+            (object) ['id' => 16, 'code' => 'R89012345', 'filiere' => 'GE', 'groupe' => 'GE-1A', 'nom' => 'Mansouri', 'prenom' => 'Imane', 'email' => 'Mansouri.Imane@gmail.com'],
+            (object) ['id' => 17, 'code' => 'A77890123', 'filiere' => 'DD', 'groupe' => 'DD-1A', 'nom' => 'Bouali', 'prenom' => 'Rachid', 'email' => 'Bouali.Rachid@gmail.com'],
+            (object) ['id' => 18, 'code' => 'R90123456', 'filiere' => 'ID', 'groupe' => 'ID-3A', 'nom' => 'Khalil', 'prenom' => 'Salma', 'email' => 'Khalil.Salma@gmail.com'],
+            (object) ['id' => 19, 'code' => 'A88901234', 'filiere' => 'GE', 'groupe' => 'GE-2A', 'nom' => 'Hassani', 'prenom' => 'Bilal', 'email' => 'Hassani.Bilal@gmail.com'],
+            (object) ['id' => 20, 'code' => 'R01234567', 'filiere' => 'DD', 'groupe' => 'DD-2A', 'nom' => 'Benjelloun', 'prenom' => 'Zineb', 'email' => 'Benjelloun.Zineb@gmail.com'],
+            (object) ['id' => 21, 'code' => 'A99012345', 'filiere' => 'ID', 'groupe' => 'ID-2A', 'nom' => 'Moussaoui', 'prenom' => 'Ismail', 'email' => 'Moussaoui.Ismail@gmail.com'],
+            (object) ['id' => 22, 'code' => 'R12345678', 'filiere' => 'GE', 'groupe' => 'GE-1A', 'nom' => 'Fassi', 'prenom' => 'Hajar', 'email' => 'Fassi.Hajar@gmail.com'],
         ];
         
         // Convertir le tableau en collection pour utiliser la pagination

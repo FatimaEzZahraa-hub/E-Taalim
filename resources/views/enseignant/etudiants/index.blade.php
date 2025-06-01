@@ -68,7 +68,7 @@
                                 <tr>
                                     <th class="px-4 py-3">Code</th>
                                     <th class="px-4 py-3">Filière</th>
-                                    <th class="px-4 py-3">Classe</th>
+                                    <th class="px-4 py-3">Groupe</th>
                                     <th class="px-4 py-3">Nom</th>
                                     <th class="px-4 py-3">Prénom</th>
                                     <th class="px-4 py-3">Email</th>
@@ -83,7 +83,7 @@
                                             {{ $etudiant->filiere }}
                                         </span>
                                     </td>
-                                    <td class="px-4 py-3">{{ $etudiant->classe }}</td>
+                                    <td class="px-4 py-3">{{ $etudiant->groupe }}</td>
                                     <td class="px-4 py-3 font-weight-bold">{{ $etudiant->nom }}</td>
                                     <td class="px-4 py-3">{{ $etudiant->prenom }}</td>
                                     <td class="px-4 py-3">
@@ -206,8 +206,8 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <select class="form-select" id="classe" name="classe" required>
-                                    <option value="" selected disabled>Sélectionnez une classe</option>
+                                <select class="form-select" id="groupe" name="groupe" required>
+                                    <option value="" selected disabled>Sélectionnez un groupe</option>
                                     <option value="DD-1A">DD-1A</option>
                                     <option value="DD-2A">DD-2A</option>
                                     <option value="ID-1A">ID-1A</option>
@@ -216,7 +216,7 @@
                                     <option value="GE-1A">GE-1A</option>
                                     <option value="GE-2A">GE-2A</option>
                                 </select>
-                                <label for="classe">Classe</label>
+                                <label for="groupe">Groupe</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -282,7 +282,7 @@
                             </div>
                             <div>
                                 <h6 class="alert-heading mb-1">Format requis</h6>
-                                <p class="mb-0 small">Le fichier doit contenir les colonnes suivantes: <strong>Code, Filière, Classe, Nom, Prénom, Email</strong></p>
+                                <p class="mb-0 small">Le fichier doit contenir les colonnes suivantes: <strong>Code, Filière, Groupe, Nom, Prénom, Email</strong></p>
                             </div>
                         </div>
                     </div>

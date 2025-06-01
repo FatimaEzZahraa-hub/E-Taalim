@@ -5,15 +5,15 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EnseignantController;
 use App\Http\Controllers\EtudiantController;
 
-// Routes d'accueil - redirection temporaire vers le dashboard enseignant
+// Routes d'accueil - affichage de la page d'accueil
 Route::get('/', function () {
-    return redirect()->route('enseignant.dashboard');
-});
+    return view('welcome');
+})->name('home');
 
 // Redirection de /enseignant vers le dashboard de l'enseignant
 Route::get('/enseignant', function () {
     return redirect()->route('enseignant.dashboard');
-})->name('home');
+});
 
 // Routes d'authentification
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

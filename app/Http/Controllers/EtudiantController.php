@@ -24,7 +24,7 @@ class EtudiantController extends Controller
         $etudiant->prenom = 'Test';
         $etudiant->code = 'E12345';
         $etudiant->email = 'etudiant.test@etaalim.edu';
-        $etudiant->classe = 'ID-2A';
+        $etudiant->groupe = 'ID-2A';
         $etudiant->filiere = 'Informatique et Développement';
         $etudiant->niveau = 'Licence 2';
         $etudiant->date_naissance = '2003-05-15';
@@ -133,7 +133,7 @@ class EtudiantController extends Controller
         // Générer des cours fictifs
         $coursData = [];
         
-        $matieres = ['Mathématiques', 'Programmation Web', 'Bases de données', 'Algorithmique', 'Intelligence Artificielle', 'Réseaux', 'Systèmes d\'exploitation', 'Anglais', 'Communication'];
+        $modules = ['Mathématiques', 'Programmation Web', 'Bases de données', 'Algorithmique', 'Intelligence Artificielle', 'Réseaux', 'Systèmes d\'exploitation', 'Anglais', 'Communication'];
         
         // Créer 25 cours fictifs pour la pagination
         for ($i = 1; $i <= 25; $i++) {
@@ -443,8 +443,8 @@ class EtudiantController extends Controller
             'assiduite' => 92
         ];
         
-        // Matieres avec progression et moyenne
-        $matieres = [
+        // Modules avec progression et moyenne
+        $modules = [
             (object) ['id' => 1, 'nom' => 'Mathématiques', 'moyenne' => 13.5, 'progression' => 70],
             (object) ['id' => 2, 'nom' => 'Programmation Web', 'moyenne' => 16.0, 'progression' => 85],
             (object) ['id' => 3, 'nom' => 'Bases de données', 'moyenne' => 14.0, 'progression' => 65],
@@ -461,7 +461,7 @@ class EtudiantController extends Controller
             (object) ['date' => now()->subDays(10)->format('Y-m-d H:i:s'), 'ip' => '10.0.0.5', 'navigateur' => 'Safari/iOS']
         ];
         
-        return view('etudiant.profil.index', compact('etudiant', 'stats', 'matieres', 'connexions'));
+        return view('etudiant.profil.index', compact('etudiant', 'stats', 'modules', 'connexions'));
     }
 
     /**

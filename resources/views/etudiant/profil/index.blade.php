@@ -325,29 +325,29 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Matiu00e8re</th>
+                                    <th>Module</th>
                                     <th>Enseignant</th>
                                     <th>Moyenne</th>
                                     <th>Progression</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($matieres as $matiere)
+                                @forelse($modules as $module)
                                     <tr>
-                                        <td>{{ $matiere->nom }}</td>
-                                        <td>{{ $matiere->enseignant }}</td>
+                                        <td>{{ $module->nom }}</td>
+                                        <td>{{ $module->enseignant }}</td>
                                         <td>
-                                            <span class="badge {{ $matiere->moyenne >= 10 ? 'bg-success' : 'bg-danger' }}">{{ $matiere->moyenne }}/20</span>
+                                            <span class="badge {{ $module->moyenne >= 10 ? 'bg-success' : 'bg-danger' }}">{{ $module->moyenne }}/20</span>
                                         </td>
                                         <td>
                                             <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar" role="progressbar" style="width: {{ $matiere->progression }}%; background-color: #8668FF;" aria-valuenow="{{ $matiere->progression }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar" role="progressbar" style="width: {{ $module->progression }}%; background-color: #8668FF;" aria-valuenow="{{ $module->progression }}" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center">Aucune matiu00e8re pour ce semestre</td>
+                                        <td colspan="4" class="text-center">Aucun module pour ce semestre</td>
                                     </tr>
                                 @endforelse
                             </tbody>

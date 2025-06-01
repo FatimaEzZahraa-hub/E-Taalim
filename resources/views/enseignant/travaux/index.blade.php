@@ -9,10 +9,10 @@
         <div class="d-flex align-items-center">
             <div class="me-3">
                 <form action="{{ route('enseignant.travaux') }}" method="GET" class="d-flex">
-                    <select name="classe_id" class="form-select me-2" onchange="this.form.submit()">
-                        <option value="">Toutes les classes</option>
-                        @foreach($classes as $classe)
-                            <option value="{{ $classe->id }}" {{ $classeId == $classe->id ? 'selected' : '' }}>{{ $classe->nom }}</option>
+                    <select name="groupe_id" class="form-select me-2" onchange="this.form.submit()">
+                        <option value="">Tous les groupes</option>
+                        @foreach($groupes as $groupe)
+                            <option value="{{ $groupe->id }}" {{ $classeId == $groupe->id ? 'selected' : '' }}>{{ $groupe->nom }}</option>
                         @endforeach
                     </select>
                 </form>
@@ -48,7 +48,7 @@
                             <tr>
                                 <th class="ps-3">Titre</th>
                                 <th>Cours</th>
-                                <th>Classe</th>
+                                <th>Groupe</th>
                                 <th>Date limite</th>
                                 <th>Soumissions</th>
                                 <th class="text-end pe-3">Actions</th>
@@ -59,7 +59,7 @@
                                 <tr>
                                     <td class="ps-3 fw-medium">{{ $travail->titre }}</td>
                                     <td>{{ $travail->cours->titre }}</td>
-                                    <td><span class="badge bg-light text-dark">{{ $travail->classe->nom }}</span></td>
+                                    <td><span class="badge bg-light text-dark">{{ $travail->groupe->nom }}</span></td>
                                     <td>{{ $travail->date_limite->format('d/m/Y') }}</td>
                                     <td>
                                         <span class="badge bg-primary">0 soumissions</span>
@@ -108,7 +108,7 @@
                     <img src="{{ asset('images/empty-tasks.svg') }}" alt="Pas de travaux" class="img-fluid mb-3" style="max-width: 150px" onerror="this.src='{{ asset('images/logo-placeholder.jpg') }}'">
                     <h5 class="text-muted mb-3">Vous n'avez pas encore créé de travaux ou devoirs</h5>
                     <div>
-                        <p class="text-muted mb-3">Essayez de sélectionner une autre classe dans le filtre ci-dessus ou</p>
+                        <p class="text-muted mb-3">Essayez de sélectionner un autre groupe dans le filtre ci-dessus ou</p>
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="emptyDevoirDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-plus me-2"></i>Créer un devoir

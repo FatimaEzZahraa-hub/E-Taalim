@@ -26,14 +26,14 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="classe_id" class="form-label">Classe <span class="text-danger">*</span></label>
-                    <select id="classe_id" class="form-select @error('classe_id') is-invalid @enderror" name="classe_id" required>
-                        <option value="">Sélectionner une classe</option>
-                        @foreach($classes as $classe)
-                            <option value="{{ $classe->id }}" {{ old('classe_id') == $classe->id ? 'selected' : '' }}>{{ $classe->nom }}</option>
+                    <label for="groupe_id" class="form-label">Groupe <span class="text-danger">*</span></label>
+                    <select id="groupe_id" class="form-select @error('groupe_id') is-invalid @enderror" name="groupe_id" required>
+                        <option value="">Sélectionner un groupe</option>
+                        @foreach($groupes as $groupe)
+                            <option value="{{ $groupe->id }}" {{ old('groupe_id') == $groupe->id ? 'selected' : '' }}>{{ $groupe->nom }}</option>
                         @endforeach
                     </select>
-                    @error('classe_id')
+                    @error('groupe_id')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

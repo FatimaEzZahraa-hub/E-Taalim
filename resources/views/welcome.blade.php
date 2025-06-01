@@ -217,8 +217,8 @@
                         <div class="feature-icon">
                             <i class="fas fa-book"></i>
                         </div>
-                        <h3>Gestion des Cours</h3>
-                        <p>Créez et gérez facilement vos cours, partagez du contenu pédagogique et suivez la progression des étudiants.</p>
+                        <h3>Gestion des groupes</h3>
+                        <p>Créez et gérez facilement vos groupes, partagez du contenu pédagogique et suivez la progression des étudiants.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -254,7 +254,7 @@
                     <h2 class="section-title">À Propos d'E-Taalim</h2>
                     <p class="lead">E-Taalim est une plateforme éducative innovante conçue pour faciliter l'enseignement et l'apprentissage.</p>
                     <p>Notre mission est de fournir aux enseignants et aux étudiants les outils nécessaires pour réussir dans un environnement éducatif numérique. Nous croyons que la technologie peut transformer l'éducation et rendre l'apprentissage plus accessible et plus engageant.</p>
-                    <p>Avec E-Taalim, les enseignants peuvent créer des cours interactifs, assigner des devoirs, organiser des examens et suivre les progrès des étudiants, le tout à partir d'une seule plateforme intuitive.</p>
+                    <p>Avec E-Taalim, les enseignants peuvent créer des cours interactifs, assigner des devoirs, organiser des examens et suivre les progrès de vos étudiants par groupe et par module, le tout à partir d'une seule plateforme intuitive.</p>
                 </div>
             </div>
         </div>

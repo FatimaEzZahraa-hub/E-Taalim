@@ -8,10 +8,10 @@
         <div class="d-flex align-items-center">
             <div class="me-3">
                 <form action="{{ route('enseignant.cours') }}" method="GET" class="d-flex">
-                    <select name="classe_id" class="form-select me-2" onchange="this.form.submit()">
-                        <option value="">Toutes les classes</option>
-                        @foreach($classes as $classe)
-                            <option value="{{ $classe->id }}" {{ $classeId == $classe->id ? 'selected' : '' }}>{{ $classe->nom }}</option>
+                    <select name="groupe_id" class="form-select me-2" onchange="this.form.submit()">
+                        <option value="">Tous les groupes</option>
+                        @foreach($groupes as $groupe)
+                            <option value="{{ $groupe->id }}" {{ $groupeId == $groupe->id ? 'selected' : '' }}>{{ $groupe->nom }}</option>
                         @endforeach
                     </select>
                 </form>
@@ -30,7 +30,7 @@
                         <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #f8f9fa;">
                             <div>
                                 <h5 class="card-title mb-0">{{ $c->titre ?? 'Cours sans titre' }}</h5>
-                                <span class="badge bg-light text-dark mt-1">{{ isset($c->classe) && is_object($c->classe) ? $c->classe->nom : 'Classe non définie' }}</span>
+                                <span class="badge bg-light text-dark mt-1">{{ isset($c->groupe) && is_object($c->groupe) ? $c->groupe->nom : 'Groupe non défini' }}</span>
                             </div>
                             <div class="dropdown">
                                 <button class="btn btn-link p-0" type="button" id="dropdownMenuButton{{ $c->id }}" data-bs-toggle="dropdown" aria-expanded="false">
@@ -138,7 +138,7 @@
             <div class="card-body text-center py-5">
                 <img src="{{ asset('images/empty-courses.svg') }}" alt="Pas de cours" class="img-fluid mb-3" style="max-width: 150px" onerror="this.src='{{ asset('images/logo-placeholder.jpg') }}'">
                 <h5 class="text-muted mb-3">Vous n'avez pas encore créé de cours</h5>
-                <p class="text-muted mb-3">Essayez de sélectionner une autre classe dans le filtre ci-dessus ou</p>
+                <p class="text-muted mb-3">Essayez de sélectionner un autre groupe dans le filtre ci-dessus ou</p>
                 <a href="{{ route('enseignant.cours.create') }}" class="btn btn-primary">
                     <i class="fas fa-plus me-2"></i>Ajouter un cours
                 </a>
