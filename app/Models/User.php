@@ -24,6 +24,7 @@ class User extends Authenticatable
         'role',
         'niveau_id',
         'groupe_id',
+        'meta_data',
     ];
 
     /**

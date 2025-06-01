@@ -9,42 +9,8 @@ class Cours extends Model
 {
     use HasFactory;
 
-<<<<<<< HEAD
     protected $table = 'Cours';
     
-    protected $fillable = [
-        'titre',
-        'description',
-        'fichier',
-        'enseignant_id',
-    ];
-
-    public function enseignant()
-    {
-        return $this->belongsTo(Enseignant::class, 'enseignant_id');
-    }
-
-    public function travauxDevoirs()
-    {
-        return $this->hasMany(TravailDevoir::class, 'id_cours');
-    }
-
-    public function examens()
-    {
-        return $this->hasMany(Examen::class, 'id_cours');
-    }
-
-    public function commentaires()
-    {
-        return $this->hasMany(Commentaire::class, 'cours_id');
-=======
-    /**
-     * Le nom de la table associée au modèle.
-     *
-     * @var string
-     */
-    protected $table = 'cours';
-
     /**
      * Les attributs qui sont assignables en masse.
      *
@@ -53,7 +19,8 @@ class Cours extends Model
     protected $fillable = [
         'titre',
         'description',
-        'enseignant_id'
+        'fichier',
+        'enseignant_id',
     ];
 
     /**
@@ -61,8 +28,9 @@ class Cours extends Model
      */
     public function enseignant()
     {
-        return $this->belongsTo(User::class, 'enseignant_id');
+        return $this->belongsTo(Enseignant::class, 'enseignant_id');
     }
+
 
     /**
      * Relation avec les modules
@@ -79,9 +47,9 @@ class Cours extends Model
     /**
      * Relation avec les travaux et devoirs
      */
-    public function devoirs()
+    public function travauxDevoirs()
     {
-        return $this->hasMany(Devoir::class);
+        return $this->hasMany(TravailDevoir::class, 'id_cours');
     }
 
     /**
@@ -89,7 +57,15 @@ class Cours extends Model
      */
     public function examens()
     {
-        return $this->hasMany(Examen::class);
->>>>>>> origin/interface-admin
+        return $this->hasMany(Examen::class, 'id_cours');
+    }
+
+    /**
+     * Relation avec les commentaires
+     */
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class, 'cours_id');
+    
     }
 }
