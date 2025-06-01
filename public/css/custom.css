@@ -1,0 +1,283 @@
+/* Styles personnalisés pour l'application E-Taalim */
+
+/* Ajustement des tableaux pour qu'ils s'adaptent à la taille de la page et soient plus grands */
+.table-responsive {
+    overflow-x: auto;
+    max-height: 85vh; /* Hauteur augmentée pour rendre le tableau plus grand */
+    margin-bottom: 2rem;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    width: 100%; /* Assure que le conteneur prend toute la largeur disponible */
+}
+
+.table {
+    width: 100%;
+    min-width: 100%; /* Utilise toute la largeur disponible */
+    margin-bottom: 0;
+    font-size: 1.1rem; /* Taille de police augmentée */
+    table-layout: fixed; /* Permet une meilleure distribution des colonnes */
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    background-color: #8668FF; /* Nouvelle couleur principale */
+    color: white;
+    font-weight: 600;
+    padding: 1rem 0.75rem; /* Cellules plus grandes */
+    z-index: 1;
+}
+
+.table td {
+    padding: 1rem 0.85rem; /* Cellules encore plus grandes */
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Exception pour les cellules contenant des actions */
+.table td:last-child {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/* Amélioration de l'apparence des tableaux */
+.table-hover tbody tr:hover {
+    background-color: rgba(134, 104, 255, 0.1);
+}
+
+/* Ajustement des colonnes d'actions pour qu'elles ne prennent pas trop de place */
+.table th:last-child,
+.table td:last-child {
+    width: 150px;
+    text-align: center;
+}
+
+/* Amélioration de l'apparence des boutons dans les tableaux */
+.table .btn {
+    margin: 0 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    display: inline-block;
+    min-width: auto;
+    text-align: center;
+    border-radius: 0.35rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.table .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table .btn-info {
+    background-color: #4895ef;
+    border-color: #4895ef;
+}
+
+.table .btn-primary {
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+.table .btn-warning {
+    background-color: #ff9e00;
+    border-color: #ff9e00;
+    color: white;
+}
+
+.table .btn-success {
+    background-color: #38b000;
+    border-color: #38b000;
+}
+
+/* Styles spécifiques pour la table des utilisateurs */
+#usersTable, #studentsTable, #teachersTable {
+    min-width: 1200px; /* Largeur spécifique plus grande pour les tables d'utilisateurs */
+    width: 100%;
+}
+
+/* Styles spécifiques pour les tables de messagerie et notifications */
+.tab-pane .table, /* Pour les tableaux dans les onglets de la messagerie */
+#messagesTable {
+    min-width: 1200px; /* Largeur spécifique plus grande */
+    width: 100%;
+}
+
+/* Style spécifique pour la page des notifications - conteneur similaire à celui des utilisateurs */
+body.notifications-page .container-fluid,
+body.admin-notifications .container-fluid {
+    max-width: 95%; /* Utiliser plus de largeur comme pour les utilisateurs */
+    padding: 0 20px;
+    margin: 0 auto; /* Centrer le conteneur */
+}
+
+/* Style spécifique pour la table des notifications - similaire au tableau des plaintes */
+#notificationsTable,
+.notifications-table, /* Classe générique pour les tables de notifications */
+table.dataTable.notifications-table {
+    width: 100%;
+    min-width: 1200px; /* Largeur minimale */
+    table-layout: auto; /* Laisser le navigateur gérer la largeur des colonnes */
+    border: 1px solid #e3e6f0; /* Bordure standard grise comme pour les plaintes */
+    margin-bottom: 20px; /* Espace en dessous du tableau */
+}
+
+/* Agrandir le cadre du tableau */
+.admin-notifications .card-body {
+    padding: 1.75rem; /* Plus d'espace dans la carte */
+}
+
+.admin-notifications .table-responsive {
+    padding: 10px; /* Ajouter du padding autour du tableau */
+    border-radius: 8px; /* Coins arrondis */
+    background-color: #fff; /* Fond blanc pour le contraste */
+}
+
+/* Largeurs des colonnes pour la table des notifications - avec colonne d'actions plus large */
+/* Ciblage plus générique pour fonctionner avec l'ID dataTable */
+#dataTable th:last-child, /* Colonne Actions */
+#dataTable td:last-child {
+    width: 25% !important; /* Largeur plus importante pour la colonne d'actions */
+    min-width: 180px; /* Largeur minimale pour s'assurer que tous les boutons s'affichent correctement */
+}
+
+/* Style pour les boutons dans la colonne actions */
+#dataTable td:last-child .btn,
+#usersTable td:last-child .btn {
+    margin: 0 3px;
+    padding: 6px 10px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Effets de survol pour les boutons d'action */
+#usersTable .btn-info:hover { background-color: #36b9cc; }
+#usersTable .btn-primary:hover { background-color: #2653d4; }
+#usersTable .btn-danger:hover { background-color: #e74a3b; }
+#usersTable .btn-warning:hover { background-color: #f6c23e; }
+
+/* Style pour le conteneur des actions */
+#usersTable td .d-flex {
+    gap: 5px;
+}
+
+/* Agrandir les cellules du tableau */
+#notificationsTable th,
+#notificationsTable td {
+    padding: 12px 15px; /* Cellules plus grandes */
+    font-size: 1.05rem; /* Texte légèrement plus grand */
+}
+
+/* Permettre le défilement horizontal pour le tableau des notifications comme pour les utilisateurs */
+.admin-notifications .table-responsive {
+    overflow-x: auto; /* Permettre le défilement si nécessaire */
+    max-width: 100%;
+}
+
+/* Style pour les badges dans les notifications */
+#notificationsTable .badge {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+    margin-right: 0.5rem;
+}
+
+/* Styles spécifiques pour le tableau des cours */
+#coursesTable th:nth-child(1), /* Titre - réduit */
+#coursesTable td:nth-child(1) {
+    width: 15%;
+}
+
+#coursesTable th:nth-child(2), /* Description - réduite */
+#coursesTable td:nth-child(2) {
+    width: 20%; /* Largeur réduite */
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#coursesTable th:nth-child(3), /* Enseignant - réduit */
+#coursesTable td:nth-child(3) {
+    width: 12%;
+}
+
+#coursesTable th:nth-child(4), /* Date - réduite */
+#coursesTable td:nth-child(4) {
+    width: 12%;
+}
+
+#coursesTable th:nth-child(5), /* Actions - fortement agrandie */
+#coursesTable td:nth-child(5) {
+    width: 41% !important; /* Largeur considérablement augmentée */
+    min-width: 250px;
+    text-align: center;
+}
+
+/* Style pour les boutons d'action dans la page des cours */
+#coursesTable .btn {
+    margin: 0 3px;
+    min-width: 110px; /* Largeur minimale pour les boutons */
+}
+
+/* Styles pour mettre en évidence les notifications non lues */
+#notificationsTable tr.unread {
+    background-color: rgba(67, 97, 238, 0.1);
+    font-weight: 600;
+}
+
+/* Styles spécifiques pour le contenu des messages et notifications */
+.tab-pane .table td:nth-child(2) { /* Colonne du sujet/contenu du message */
+    min-width: 400px; /* Espace minimal pour le contenu */
+    max-width: 600px; /* Limite de la largeur */
+    white-space: normal; /* Permettre le retour à la ligne */
+}
+
+.tab-pane .table th {
+    text-transform: uppercase; /* Mettre les en-têtes en majuscules */
+    letter-spacing: 0.5px; /* Espacement des lettres */
+}
+
+/* Amélioration des modales pour les messages */
+.modal-dialog {
+    max-width: 700px; /* Augmenter la taille des modales de message */
+}
+
+.modal-body {
+    padding: 1.5rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.tab-content > .tab-pane {
+    padding: 20px 0;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Distribuer équitablement l'espace entre les colonnes */
+#usersTable th, #studentsTable th, #teachersTable th,
+#usersTable td, #studentsTable td, #teachersTable td {
+    white-space: nowrap;
+    width: auto;
+}
+
+/* Amélioration de l'affichage sur petits écrans */
+@media (max-width: 768px) {
+    .table-responsive {
+        max-height: 60vh;
+    }
+    
+    .table {
+        min-width: 600px;
+    }
+}

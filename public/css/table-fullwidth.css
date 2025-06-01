@@ -1,0 +1,85 @@
+/* Styles pour les tableaux pleine largeur */
+
+/* Conteneur de tableau */
+.card {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Amélioration des tableaux pour qu'ils utilisent toute la largeur */
+.table-responsive {
+    width: 100%;
+    overflow-x: visible; /* Évite les barres de défilement horizontales si possible */
+}
+
+/* Ajustement des largeurs de colonnes pour différents types de tableaux */
+/* Tableau d'événements */
+.events-table th:nth-child(1) {
+    width: 45%;
+}
+.events-table th:nth-child(2) {
+    width: 30%;
+}
+.events-table th:nth-child(3) {
+    width: 25%; /* Augmenter légèrement la largeur de la colonne des actions */
+}
+
+/* Tableau de messages */
+.messages-table th:nth-child(1),
+.messages-table th:nth-child(2) {
+    width: 20%;
+}
+.messages-table th:nth-child(3) {
+    width: 40%;
+}
+.messages-table th:nth-child(4) {
+    width: 20%;
+}
+
+/* Tableau de cours */
+.courses-table th:nth-child(1) {
+    width: 30%;
+}
+.courses-table th:nth-child(2) {
+    width: 15%;
+}
+.courses-table th:nth-child(3) {
+    width: 15%;
+}
+.courses-table th:nth-child(4) {
+    width: 40%; /* Augmenter la largeur de la colonne des actions */
+}
+
+/* Styles spécifiques pour les boutons dans les tableaux */
+.table .btn {
+    display: inline-block;
+    margin: 0.25rem;
+    white-space: nowrap;
+}
+
+/* Assurer que les boutons dans la colonne actions sont visibles */
+.table td:last-child {
+    white-space: normal; /* Permettre le retour à la ligne pour les boutons */
+    overflow: visible; /* Assurer que les boutons sont visibles */
+    text-overflow: clip;
+}
+
+/* Amélioration de l'apparence des tableaux sur les grands écrans */
+@media (min-width: 1200px) {
+    .table-responsive {
+        overflow-x: visible;
+    }
+    
+    .table {
+        table-layout: fixed;
+    }
+    
+    .table th, .table td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
