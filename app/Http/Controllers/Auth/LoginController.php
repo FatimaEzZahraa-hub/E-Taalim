@@ -16,7 +16,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        // Supprimer le middleware guest pour permettre l'accès à la page de connexion
+        $this->middleware('guest')->except('logout');
     }
 
     /**
@@ -27,7 +27,13 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            return redirect()->route('etudiant.dashboard');
+            $user = Auth::user();
+            if ($user->estEnseignant()) {
+                return redirect()->route('enseignant.dashboard');
+            } else if ($user->estEtudiant()) {
+                return redirect()->route('etudiant.dashboard');
+            }
+            return redirect('/');
         }
         return view('auth.login');
     }
@@ -51,7 +57,17 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             Log::info('Connexion réussie', ['user_id' => Auth::id()]);
-            return redirect()->route('etudiant.dashboard');
+            
+            // Redirection selon le rôle
+            $user = Auth::user();
+            if ($user->estEnseignant()) {
+                return redirect()->route('enseignant.dashboard');
+            } else if ($user->estEtudiant()) {
+                return redirect()->route('etudiant.dashboard');
+            }
+            
+            // Par défaut, redirection vers la page d'accueil
+            return redirect()->route('home');
         }
 
         // Log de l'échec de connexion

@@ -8,10 +8,17 @@
         <h1 class="display-5 fw-bold mb-0">Soumissions</h1>
         <div class="me-3">
             <form action="{{ route('enseignant.soumissions') }}" method="GET" class="d-flex">
+<<<<<<< HEAD
                 <select name="groupe_id" class="form-select me-2" onchange="this.form.submit()">
                     <option value="">Tous les groupes</option>
                     @foreach($groupes as $groupe)
                         <option value="{{ $groupe->id }}" {{ $classeId == $groupe->id ? 'selected' : '' }}>{{ $groupe->nom }}</option>
+=======
+                <select name="classe_id" class="form-select me-2" onchange="this.form.submit()">
+                    <option value="">Toutes les classes</option>
+                    @foreach($classes as $classe)
+                        <option value="{{ $classe->id }}" {{ $classeId == $classe->id ? 'selected' : '' }}>{{ $classe->nom }}</option>
+>>>>>>> login-acceuil
                     @endforeach
                 </select>
             </form>
@@ -29,7 +36,11 @@
                         <thead class="table-light">
                             <tr>
                                 <th class="ps-3">Étudiant</th>
+<<<<<<< HEAD
                                 <th>Groupe</th>
+=======
+                                <th>Classe</th>
+>>>>>>> login-acceuil
                                 <th>Travail/Devoir</th>
                                 <th>Cours</th>
                                 <th>Date de Soumission</th>
@@ -43,7 +54,11 @@
                                     <td class="ps-3">
                                         {{ $soumission->etudiant->prenom }} {{ $soumission->etudiant->nom }}
                                     </td>
+<<<<<<< HEAD
                                     <td><span class="badge bg-light text-dark">{{ $soumission->etudiant->groupe->nom }}</span></td>
+=======
+                                    <td><span class="badge bg-light text-dark">{{ $soumission->etudiant->classe->nom }}</span></td>
+>>>>>>> login-acceuil
                                     <td>{{ $soumission->travailDevoir->titre }}</td>
                                     <td>{{ $soumission->cours->titre }}</td>
                                     <td>{{ $soumission->date_soumission->format('d/m/Y H:i') }}</td>

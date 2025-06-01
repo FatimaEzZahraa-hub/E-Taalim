@@ -10,20 +10,36 @@
             <form action="{{ route('enseignant.dashboard') }}" method="GET">
                 <div class="row align-items-end">
                     <div class="col-md-4 mb-3 mb-md-0">
+<<<<<<< HEAD
                         <label for="groupe_filter" class="form-label fw-bold mb-1">Filtrer par groupe:</label>
                         <select name="groupe_id" id="groupe_filter" class="form-select" style="height: 38px; display: flex; align-items: center;">
                             <option value="">Tous les groupes</option>
                             @foreach($cours->pluck('niveau')->unique() as $niveau)
                                 <option value="{{ $niveau }}" {{ request('groupe_id') == $niveau ? 'selected' : '' }}>{{ $niveau }}</option>
+=======
+                        <label for="classe_filter" class="form-label fw-bold mb-1">Filtrer par classe:</label>
+                        <select name="classe_id" id="classe_filter" class="form-select" style="height: 38px; display: flex; align-items: center;">
+                            <option value="">Toutes les classes</option>
+                            @foreach($cours->pluck('niveau')->unique() as $niveau)
+                                <option value="{{ $niveau }}" {{ request('classe_id') == $niveau ? 'selected' : '' }}>{{ $niveau }}</option>
+>>>>>>> login-acceuil
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-4 mb-3 mb-md-0">
+<<<<<<< HEAD
                         <label for="module_filter" class="form-label fw-bold mb-1">Module:</label>
                         <select name="module_id" id="module_filter" class="form-select" style="height: 38px; display: flex; align-items: center;">
                             <option value="">Tous les modules</option>
                             @foreach($cours->pluck('module')->unique() as $module)
                                 <option value="{{ $module }}" {{ request('module_id') == $module ? 'selected' : '' }}>{{ $module }}</option>
+=======
+                        <label for="matiere_filter" class="form-label fw-bold mb-1">Matière:</label>
+                        <select name="matiere_id" id="matiere_filter" class="form-select" style="height: 38px; display: flex; align-items: center;">
+                            <option value="">Toutes les matières</option>
+                            @foreach($cours->pluck('matiere')->unique() as $matiere)
+                                <option value="{{ $matiere }}" {{ request('matiere_id') == $matiere ? 'selected' : '' }}>{{ $matiere }}</option>
+>>>>>>> login-acceuil
                             @endforeach
                         </select>
                     </div>
@@ -149,7 +165,11 @@
                                         <tr>
                                             <td class="ps-3 fw-medium">{{ $cour->titre }}</td>
                                             <td>{{ $cour->niveau }}</td>
+<<<<<<< HEAD
                                             <td>{{ $cour->module }}</td>
+=======
+                                            <td>{{ $cour->matiere }}</td>
+>>>>>>> login-acceuil
                                             <td>
                                                 <span class="badge bg-light text-dark">
                                                     {{ $cour->etudiants->count() }} étudiants
@@ -327,7 +347,11 @@
                                         <div class="date-month small text-muted">Mai</div>
                                     </div>
                                     <div class="event-details">
+<<<<<<< HEAD
                                         <div class="event-title fw-semibold">Conseil de groupe</div>
+=======
+                                        <div class="event-title fw-semibold">Conseil de classe</div>
+>>>>>>> login-acceuil
                                         <div class="event-time small text-muted">
                                             <i class="bi bi-clock me-1"></i> 15:30 - 17:30
                                         </div>

@@ -9,10 +9,17 @@
         <div class="d-flex align-items-center">
             <div class="me-3">
                 <form action="{{ route('enseignant.examens') }}" method="GET" class="d-flex">
+<<<<<<< HEAD
                     <select name="groupe_id" class="form-select me-2" onchange="this.form.submit()">
                         <option value="">Tous les groupes</option>
                         @foreach($groupes as $groupe)
                             <option value="{{ $groupe->id }}" {{ $classeId == $groupe->id ? 'selected' : '' }}>{{ $groupe->nom }}</option>
+=======
+                    <select name="classe_id" class="form-select me-2" onchange="this.form.submit()">
+                        <option value="">Toutes les classes</option>
+                        @foreach($classes as $classe)
+                            <option value="{{ $classe->id }}" {{ $classeId == $classe->id ? 'selected' : '' }}>{{ $classe->nom }}</option>
+>>>>>>> login-acceuil
                         @endforeach
                     </select>
                 </form>
@@ -44,7 +51,11 @@
                             <tr>
                                 <th class="ps-3">Titre</th>
                                 <th>Cours</th>
+<<<<<<< HEAD
                                 <th>Groupe</th>
+=======
+                                <th>Classe</th>
+>>>>>>> login-acceuil
                                 <th>Date d'Examen</th>
                                 <th>Fichier</th>
                                 <th class="text-end pe-3">Actions</th>
@@ -55,7 +66,11 @@
                                 <tr>
                                     <td class="ps-3 fw-medium">{{ $examen->titre }}</td>
                                     <td>{{ $examen->cours->titre }}</td>
+<<<<<<< HEAD
                                     <td><span class="badge bg-light text-dark">{{ $examen->groupe->nom }}</span></td>
+=======
+                                    <td><span class="badge bg-light text-dark">{{ $examen->classe->nom }}</span></td>
+>>>>>>> login-acceuil
                                     <td>
                                         @if($examen->date_exam)
                                             <span class="{{ $examen->date_exam < now() ? 'text-danger' : 'text-success' }}">

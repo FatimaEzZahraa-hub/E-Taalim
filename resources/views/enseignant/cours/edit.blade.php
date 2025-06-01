@@ -27,6 +27,7 @@
                 </div>
                 
                 <div class="mb-3">
+<<<<<<< HEAD
                     <label for="groupe_id" class="form-label">Groupe <span class="text-danger">*</span></label>
                     <select id="groupe_id" class="form-select @error('groupe_id') is-invalid @enderror" name="groupe_id" required>
                         <option value="">Sélectionner un groupe</option>
@@ -35,6 +36,16 @@
                         @endforeach
                     </select>
                     @error('groupe_id')
+=======
+                    <label for="classe_id" class="form-label">Classe <span class="text-danger">*</span></label>
+                    <select id="classe_id" class="form-select @error('classe_id') is-invalid @enderror" name="classe_id" required>
+                        <option value="">Sélectionner une classe</option>
+                        @foreach($classes as $classe)
+                            <option value="{{ $classe->id }}" {{ (old('classe_id', $cours->classe->id ?? null) == $classe->id) ? 'selected' : '' }}>{{ $classe->nom }}</option>
+                        @endforeach
+                    </select>
+                    @error('classe_id')
+>>>>>>> login-acceuil
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
