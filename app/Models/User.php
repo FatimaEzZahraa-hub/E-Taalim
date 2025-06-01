@@ -50,17 +50,6 @@ class User extends Authenticatable
     }
     
     /**
-<<<<<<< HEAD
-     * Check if the user is a teacher
-     *
-     * @return bool
-     */
-    public function estEnseignant(): bool
-    {
-        // For demo purposes, always return true to show the sidebar
-        // In a real application, you would check the user's role
-        return true;
-=======
      * Obtenir les groupes auxquels l'utilisateur est affecté
      */
     public function groupes()
@@ -108,6 +97,5 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->role === 'admin';
->>>>>>> origin/interface-admin
     }
 }

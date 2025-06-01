@@ -1,17 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EnseignantController;
 use App\Http\Controllers\EtudiantController;
-=======
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ModuleController;
->>>>>>> origin/interface-admin
 
 // Routes d'accueil - affichage de la page d'accueil
 Route::get('/', function () {
@@ -23,7 +20,6 @@ Route::get('/enseignant', function () {
     return redirect()->route('enseignant.dashboard');
 });
 
-<<<<<<< HEAD
 // Routes d'authentification
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -163,38 +159,6 @@ Route::view('/contact', 'pages.contact')->name('contact');
 Route::view('/politique-de-confidentialite', 'pages.politique')->name('politique');
 Route::view('/conditions-utilisation', 'pages.conditions')->name('conditions');
 Route::view('/contact-administration', 'pages.contact-admin')->name('contact.admin');
-=======
-// Route de déconnexion
-Route::post('/logout', function() {
-    return redirect('/');
-})->name('logout');
-
-// Routes pour l'enseignant (sans authentification pour le développement)
-Route::prefix('enseignant')->group(function () {
-    // Dashboard
-    Route::get('/dashboard', function() {
-        return view('enseignant.dashboard');
-    })->name('enseignant.dashboard');
-    
-    // Modules de l'enseignant
-    Route::get('/modules', [ModuleController::class, 'mesModules'])->name('enseignant.modules.index');
-    Route::get('/modules/{id}', [ModuleController::class, 'showModule'])->name('enseignant.modules.show');
-    
-    // Gestion des cours
-    Route::post('/cours', function() {
-        return redirect()->back()->with('success', 'Cours ajouté avec succès');
-    })->name('enseignant.cours.store');
-    
-    // Gestion des devoirs
-    Route::post('/devoirs', function() {
-        return redirect()->back()->with('success', 'Devoir ajouté avec succès');
-    })->name('enseignant.devoirs.store');
-    
-    // Gestion des examens
-    Route::post('/examens', function() {
-        return redirect()->back()->with('success', 'Examen planifié avec succès');
-    })->name('enseignant.examens.store');
-});
 
 // Routes pour l'administration (sans authentification pour le développement)
 Route::prefix('admin')->group(function () {
@@ -321,5 +285,7 @@ Route::prefix('admin')->group(function () {
     // Plaintes
     Route::get('/complaints', [AdminController::class, 'complaints'])->name('admin.complaints');
     Route::post('/complaints/{id}/respond', [AdminController::class, 'respondToComplaint'])->name('admin.complaints.respond');
+    
+    // Calendrier
+    Route::get('/calendrier', [AdminController::class, 'calendrier'])->name('admin.calendrier');
 });
->>>>>>> origin/interface-admin

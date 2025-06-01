@@ -25,26 +25,18 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        // Statistiques réelles depuis la base de données
-        $users_count = DB::table('utilisateurs')->count();
+        // Statistiques temporaires pour le développement
+        $users_count = DB::table('users')->count();
         
-        // Nombre d'étudiants
-        $students_count = DB::table('utilisateurs')
-            ->join('roles', 'utilisateurs.role_id', '=', 'roles.id')
-            ->where('roles.nom', '=', 'etudiant')
-            ->count();
-            
-        // Nombre d'enseignants
-        $teachers_count = DB::table('utilisateurs')
-            ->join('roles', 'utilisateurs.role_id', '=', 'roles.id')
-            ->where('roles.nom', '=', 'enseignant')
-            ->count();
+        // Valeurs temporaires pour le développement
+        $students_count = 0; // Sera mis à jour quand la migration sera terminée
+        $teachers_count = 0; // Sera mis à jour quand la migration sera terminée
             
         // Nombre de cours
-        $courses_count = DB::table('cours')->count();
+        $courses_count = 0; // Temporairement mis u00e0 0 jusqu'u00e0 la cru00e9ation de la table
         
         // Nombre d'événements
-        $events_count = DB::table('evenements')->count();
+        $events_count = 0; // Temporairement mis u00e0 0 jusqu'u00e0 la cru00e9ation de la table
         
         // Compilation des statistiques
         $stats = [
@@ -55,24 +47,11 @@ class AdminController extends Controller
             'events_count' => $events_count,
         ];
         
-        // Récupération des derniers événements
-        $latest_events = DB::table('evenements')
-            ->orderBy('date_debut', 'desc')
-            ->limit(5)
-            ->get();
+        // Récupération des derniers événements (temporairement désactivé)
+        $latest_events = collect([]); // Collection vide temporaire
         
-        // Récupération des derniers messages
-        $latest_messages = DB::table('messages')
-            ->join('utilisateurs as expediteur', 'messages.id_expediteur', '=', 'expediteur.id')
-            ->join('utilisateurs as destinataire', 'messages.id_destinataire', '=', 'destinataire.id')
-            ->select(
-                'messages.*',
-                'expediteur.email as expediteur_email',
-                'destinataire.email as destinataire_email'
-            )
-            ->orderBy('date_envoi', 'desc')
-            ->limit(5)
-            ->get();
+        // Récupération des derniers messages (temporairement désactivé)
+        $latest_messages = collect([]); // Collection vide temporaire
         
         return view('admin.dashboard.index', compact('stats', 'latest_events', 'latest_messages'));
     }
@@ -93,10 +72,10 @@ class AdminController extends Controller
             ->select(
                 'users.id',
                 'users.email',
-                'users.role',
                 'users.name',
-                'users.meta_data',
-                'users.initial_password' // Ajout de la colonne initial_password
+                'users.email_verified_at',
+                'users.created_at',
+                'users.updated_at'
             );
         
         // Appliquer le filtre de recherche si présent
@@ -107,10 +86,10 @@ class AdminController extends Controller
             });
         }
         
-        // Appliquer le filtre de rôle si présent
-        if (!empty($role)) {
-            $usersQuery->where('users.role', $role);
-        }
+        // Filtre de rôle temporairement désactivé jusqu'à la création de la colonne role
+        // if (!empty($role)) {
+        //     $usersQuery->where('users.role', $role);
+        // }
         
         // Récupérer les utilisateurs
         $users = $usersQuery->get();
@@ -127,16 +106,16 @@ class AdminController extends Controller
         // Déboguer pour voir les utilisateurs récupérés
         Log::info('Utilisateurs récupérés:', ['count' => count($users), 'users' => $users, 'filtres' => ['search' => $search, 'role' => $role, 'status' => $status]]);
         
-        // Récupération des étudiants depuis la base de données avec filtrage
+        // Récupération des étudiants depuis la base de données (temporairement désactivé)
+        // En attendant la migration qui ajoutera la colonne 'role'
         $studentsQuery = DB::table('users')
-            ->where('role', '=', 'student')
             ->select(
                 'id',
                 'email',
                 'name as nom',
-                'meta_data',
                 'created_at'
-            );
+            )
+            ->limit(0); // Aucun résultat pour éviter les erreurs
         
         // Appliquer le filtre de recherche pour les étudiants si présent
         $studentSearch = $request->input('student_search', '');
@@ -181,16 +160,16 @@ class AdminController extends Controller
         // Déboguer pour voir les étudiants récupérés
         Log::info('Étudiants récupérés:', ['count' => count($students)]);
         
-        // Récupération des enseignants depuis la base de données avec filtrage
+        // Récupération des enseignants depuis la base de données (temporairement désactivé)
+        // En attendant la migration qui ajoutera la colonne 'role'
         $teachersQuery = DB::table('users')
-            ->where('role', '=', 'teacher')
             ->select(
                 'id',
                 'email',
                 'name as nom',
-                'meta_data',
                 'created_at'
-            );
+            )
+            ->limit(0); // Aucun résultat pour éviter les erreurs
         
         // Appliquer le filtre de recherche pour les enseignants si présent
         $teacherSearch = $request->input('teacher_search', '');
@@ -234,8 +213,8 @@ class AdminController extends Controller
         // Déboguer pour voir les enseignants récupérés
         Log::info('Enseignants récupérés:', ['count' => count($teachers)]);
                     
-        // Récupérer tous les niveaux actifs pour le formulaire d'ajout d'étudiant
-        $niveaux = \App\Models\Niveau::where('actif', true)->get();
+        // Temporairement désactivé jusqu'à la création de la table niveaux
+        $niveaux = collect([]);
         
         return view('admin.users.index', compact('users', 'students', 'teachers', 'niveaux'));
     }
@@ -873,42 +852,19 @@ class AdminController extends Controller
         // Récupération des messages reçus par l'administrateur connecté
         $admin_id = auth()->id() ?? 1; // Utiliser l'ID 1 si non connecté (pour test)
 
-        $messages_received = DB::table('messages')
-            ->join('utilisateurs as expediteur', 'messages.id_expediteur', '=', 'expediteur.id')
-            ->where('messages.id_destinataire', $admin_id)
-            ->select(
-                'messages.id',
-                'messages.contenu',
-                'messages.date_envoi',
-                'messages.lu',
-                'expediteur.id as expediteur_id',
-                'expediteur.email as expediteur_email'
-            )
-            ->orderBy('messages.date_envoi', 'desc')
-            ->get();
-
-        // Récupération des messages envoyés par l'administrateur connecté
-        $messages_sent = DB::table('messages')
-            ->join('utilisateurs as destinataire', 'messages.id_destinataire', '=', 'destinataire.id')
-            ->where('messages.id_expediteur', $admin_id)
-            ->select(
-                'messages.id',
-                'messages.contenu',
-                'messages.date_envoi',
-                'messages.lu',
-                'destinataire.id as destinataire_id',
-                'destinataire.email as destinataire_email'
-            )
-            ->orderBy('messages.date_envoi', 'desc')
-            ->get();
-
+        // Temporairement désactivé jusqu'à la création des tables messages et utilisateurs
+        $messages_received = collect([]);
+        $messages_sent = collect([]);
+        
         // Récupération de tous les utilisateurs pour le formulaire d'envoi
-        $users = DB::table('utilisateurs')
+        // Utiliser la table users au lieu de utilisateurs
+        $users = DB::table('users')
             ->select('id', 'email')
             ->where('id', '!=', $admin_id)
             ->get();
 
-        return view('admin.messages.index', compact('messages_received', 'messages_sent', 'users'));
+        return view('admin.messages.index', compact('messages_received', 'messages_sent', 'users'))
+            ->with('info', 'La messagerie est temporairement indisponible. Les tables nécessaires sont en cours de création.');
     }
 
     /**
@@ -916,8 +872,12 @@ class AdminController extends Controller
      */
     public function sendMessage(Request $request)
     {
+        // Temporairement désactivé jusqu'à la création des tables messages et notifications
+        return redirect()->back()->with('info', 'L\'envoi de messages est temporairement indisponible. Les tables nécessaires sont en cours de création.');
+        
+        /* Code original désactivé
         $validator = Validator::make($request->all(), [
-            'id_destinataire' => 'required|exists:Utilisateurs,id',
+            'id_destinataire' => 'required|exists:users,id',  // Modifié: Utilisateurs -> users
             'message' => 'required|string',
         ]);
         
@@ -940,8 +900,9 @@ class AdminController extends Controller
             'lu' => 0,
             'user_id' => $request->id_destinataire
         ]);
+        */
         
-        return redirect()->back()->with('success', 'Message envoyé avec succès');
+        // return redirect()->back()->with('success', 'Message envoyé avec succès');
     }
     
     /**
@@ -949,22 +910,23 @@ class AdminController extends Controller
      */
     public function notifications()
     {
-        // Récupérer les notifications depuis la base de données
-        $notifications = DB::table('notifications')
-            ->select(
-                'notifications.id',
-                'notifications.titre',
-                'notifications.message as contenu',
-                'notifications.user_id',
-                'notifications.date_notification as date_creation',
-                'notifications.date_expiration',
-                'notifications.lu as est_lu',
-                'notifications.type'
-            )
-            ->orderBy('date_notification', 'desc')
-            ->get();
+        // Temporairement désactivé jusqu'à la création de la table notifications
+        $notifications = collect([
+            // Exemples de notifications pour l'affichage
+            (object)[
+                'id' => 1,
+                'titre' => 'Exemple de notification',
+                'contenu' => 'Cette notification est un exemple. La fonctionnalité complète sera disponible prochainement.',
+                'user_id' => 1,
+                'date_creation' => now(),
+                'date_expiration' => now()->addDays(7),
+                'est_lu' => false,
+                'type' => 'info'
+            ]
+        ]);
                         
-        return view('admin.notifications.index', compact('notifications'));
+        return view('admin.notifications.index', compact('notifications'))
+            ->with('info', 'Les notifications sont temporairement indisponibles. La table nécessaire est en cours de création.');
     }
     
     /**
@@ -1501,6 +1463,22 @@ class AdminController extends Controller
         ];
         
         return view('admin.messages.view', compact('message'));
+    }
+
+    /**
+     * Affiche la page du calendrier
+     */
+    public function calendrier()
+    {
+        // Exemple d'événements pour démonstration
+        $events = [
+            (object) ['id' => 1, 'title' => 'Réunion pédagogique', 'date' => '2025-06-05', 'time' => '09:00', 'description' => 'Réunion avec tous les enseignants pour discuter des programmes.'],
+            (object) ['id' => 2, 'title' => 'Conseil d\'administration', 'date' => '2025-06-12', 'time' => '14:00', 'description' => 'Révision des objectifs trimestriels et du budget.'],
+            (object) ['id' => 3, 'title' => 'Journée portes ouvertes', 'date' => '2025-06-20', 'time' => '10:00', 'description' => 'Accueil des nouveaux étudiants et de leurs parents.'],
+            (object) ['id' => 4, 'title' => 'Formation enseignants', 'date' => '2025-06-25', 'time' => '09:30', 'description' => 'Formation sur les nouvelles méthodes pédagogiques.'],
+        ];
+        
+        return view('admin.calendrier.index', compact('events'));
     }
 
 }

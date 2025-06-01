@@ -19,24 +19,15 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        // Récupérer les modules avec les relations niveau et enseignant
-        $modules = Module::with(['niveau', 'enseignant', 'groupes'])
-            ->select('id', 'nom', 'code', 'description', 'couleur', 'image', 'niveau_id', 'enseignant_id')
-            ->get();
-        
-        // Récupérer les niveaux directement depuis la table niveaux
-        $niveaux = DB::table('niveaux')
-            ->where('actif', true)
-            ->select('id', 'nom', 'description')
-            ->get();
-        
-        // Récupérer les enseignants depuis la table users
+        // Temporairement désactivé jusqu'à la création de la table modules
+        $modules = collect([]);
+        $niveaux = collect([]);
         $enseignants = DB::table('users')
-            ->where('role', '=', 'teacher')
             ->select('id', 'email', 'name')
             ->get();
         
-        return view('admin.modules.index', compact('modules', 'niveaux', 'enseignants'));
+        return view('admin.modules.index', compact('modules', 'niveaux', 'enseignants'))
+            ->with('info', 'La gestion des modules est temporairement indisponible. Les tables nécessaires sont en cours de création.');
     }
     
     /**
@@ -305,11 +296,11 @@ class ModuleController extends Controller
     public function mesModules()
     {
         $enseignant = Auth::user();
-        $modules = Module::where('enseignant_id', $enseignant->id)
-                        ->with(['niveau', 'groupes', 'cours', 'devoirs'])
-                        ->get();
+        // Temporairement désactivé jusqu'à la création de la table modules
+        $modules = collect([]);
         
-        return view('enseignant.modules.index', compact('modules'));
+        return view('enseignant.modules.index', compact('modules'))
+            ->with('info', 'La gestion des modules est temporairement indisponible. Les tables nécessaires sont en cours de création.');
     }
     
     /**
@@ -318,12 +309,10 @@ class ModuleController extends Controller
     public function showModule($id)
     {
         $enseignant = Auth::user();
-        $module = Module::where('id', $id)
-                        ->where('enseignant_id', $enseignant->id)
-                        ->with(['niveau', 'groupes', 'cours', 'devoirs'])
-                        ->firstOrFail();
+        // Temporairement désactivé jusqu'à la création de la table modules
         
-        return view('enseignant.modules.show', compact('module'));
+        return redirect()->route('enseignant.modules.index')
+            ->with('info', 'La gestion des modules est temporairement indisponible. Les tables nécessaires sont en cours de création.');
     }
     
     /**
@@ -331,9 +320,8 @@ class ModuleController extends Controller
      */
     public function getGroupesByNiveau($niveau_id)
     {
-        $groupes = Groupe::where('niveau_id', $niveau_id)
-                        ->where('actif', true)
-                        ->get(['id', 'nom']);
+        // Temporairement désactivé jusqu'à la création de la table groupes
+        $groupes = collect([]);
                         
         return response()->json(['groupes' => $groupes]);
     }

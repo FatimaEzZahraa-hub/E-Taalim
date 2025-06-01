@@ -108,6 +108,7 @@
             padding: 20px;
             min-height: 100vh;
             transition: var(--transition);
+            width: calc(100% - 250px);
         }
         
         .top-bar {
@@ -168,6 +169,7 @@
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
             margin-bottom: 20px;
+            width: 100%;
         }
         
         .card:hover {
@@ -180,6 +182,12 @@
             padding: 15px 20px;
             font-weight: 600;
             border-radius: 10px 10px 0 0 !important;
+        }
+        
+        /* Règle pour les conteneurs dans les pages admin */
+        .main-content .container {
+            max-width: 100%;
+            width: 100%;
         }
         
         .card-body {
@@ -256,24 +264,25 @@
             font-weight: 500;
         }
         
-        /* Mobile Responsive */
+        /* Responsive */
         @media (max-width: 991.98px) {
             .sidebar {
                 width: 0;
-                padding: 0;
+                overflow: hidden;
             }
             
             .sidebar.active {
                 width: 250px;
-                padding: 0;
             }
             
             .main-content {
                 margin-left: 0;
+                width: 100%;
             }
             
             .main-content.active {
                 margin-left: 250px;
+                width: calc(100% - 250px);
             }
             
             .toggle-btn {
@@ -339,6 +348,11 @@
                         <i class="fas fa-bell"></i> Notifications
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.calendrier') }}" class="nav-link {{ request()->routeIs('admin.calendrier*') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-alt"></i> Calendrier
+                    </a>
+                </li>
             </ul>
             
             <div class="text-center mt-4 mb-4">
@@ -390,23 +404,20 @@
                                 $admin_id = auth()->id() ?? 1;
                                 $admin = DB::table('users')
                                     ->where('id', $admin_id)
-                                    ->select('id', 'email', 'name', 'meta_data')
+                                    ->select('id', 'email', 'name')
                                     ->first();
                                     
-                                // Extraire les métadonnées
-                                if (is_string($admin->meta_data)) {
-                                    $metaData = json_decode($admin->meta_data, true) ?: [];
-                                } elseif (is_object($admin->meta_data)) {
-                                    $metaData = (array) $admin->meta_data;
-                                } else {
-                                    $metaData = [];
-                                }
+                                // Valeurs par défaut pour les métadonnées (car la colonne n'existe pas encore)
+                                $metaData = [];
                             @endphp
                             
                             @php
-                                $photo = $metaData['photo'] ?? null;
-                                $prenom = $metaData['prenom'] ?? '';
-                                $nom = $metaData['nom'] ?? '';
+                                // Utiliser le nom complet comme alternative
+                                $photo = null; // Pas de photo par défaut
+                                $fullName = $admin->name ?? 'Admin';
+                                $nameParts = explode(' ', $fullName);
+                                $prenom = $nameParts[0] ?? 'Admin';
+                                $nom = $nameParts[1] ?? '';
                             @endphp
                             @if($photo)
                                 <img src="{{ asset('storage/' . $photo) }}" alt="Admin" class="me-2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">

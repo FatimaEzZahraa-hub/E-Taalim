@@ -15,7 +15,10 @@ class ClasseController extends Controller
      */
     public function index()
     {
-        $niveaux = Niveau::with('groupes')->get();
+        // Temporairement du00e9sactivu00e9 jusqu'u00e0 la cru00e9ation de la table niveaux
+        // $niveaux = Niveau::with('groupes')->get();
+        $niveaux = collect([]); // Collection vide temporaire
+        
         return view('admin.classes.index', compact('niveaux'));
     }
     
