@@ -45,4 +45,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    /**
+     * Check if the user is a teacher
+     *
+     * @return bool
+     */
+    public function estEnseignant(): bool
+    {
+        // For demo purposes, always return true to show the sidebar
+        // In a real application, you would check the user's role
+        return true;
+    }
 }

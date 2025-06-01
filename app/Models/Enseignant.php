@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Etudiant extends Model
+class Enseignant extends Model
 {
     use HasFactory;
 
-    protected $table = 'Etudiants';
+    protected $table = 'enseignants';
     
     protected $fillable = [
         'utilisateur_id',
@@ -24,9 +24,9 @@ class Etudiant extends Model
         return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
     }
 
-    public function soumissions()
+    public function cours()
     {
-        return $this->hasMany(Soumission::class, 'id_etudiant');
+        return $this->hasMany(Cours::class, 'enseignant_id');
     }
 
     public function nomComplet()
