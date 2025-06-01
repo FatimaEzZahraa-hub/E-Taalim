@@ -1,0 +1,88 @@
+/* Thème violet pour E-Taalim - Couleur principale #8668FF */
+
+/* Styles de boutons personnalisés */
+.btn-custom-primary {
+    background-color: #8668FF;
+    border-color: #8668FF;
+    color: white;
+}
+
+.btn-custom-primary:hover {
+    background-color: #7559e8;
+    border-color: #7559e8;
+    color: white;
+}
+
+/* Styles pour les liens */
+a {
+    color: #8668FF;
+}
+
+a:hover {
+    color: #7559e8;
+}
+
+/* Styles pour les badges */
+.badge-primary {
+    background-color: #8668FF;
+}
+
+/* Styles pour les alertes */
+.alert-primary {
+    background-color: rgba(134, 104, 255, 0.1);
+    border-color: #8668FF;
+    color: #5a43c5;
+}
+
+/* Styles pour les cartes */
+.card-primary {
+    border-color: #8668FF;
+}
+
+.card-primary .card-header {
+    background-color: #8668FF;
+    color: white;
+}
+
+/* Styles pour les éléments de navigation */
+.nav-pills .nav-link.active {
+    background-color: #8668FF;
+}
+
+/* Styles pour les éléments de formulaire */
+.form-control:focus {
+    border-color: #8668FF;
+    box-shadow: 0 0 0 0.2rem rgba(134, 104, 255, 0.25);
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #8668FF;
+    border-color: #8668FF;
+}
+
+/* Styles pour les progressbars */
+.progress-bar {
+    background-color: #8668FF;
+}
+
+/* Styles pour les tableaux */
+.table-primary, 
+.table-primary > th, 
+.table-primary > td {
+    background-color: rgba(134, 104, 255, 0.1);
+}
+
+/* Styles pour les bordures */
+.border-primary {
+    border-color: #8668FF !important;
+}
+
+/* Styles pour le texte */
+.text-primary {
+    color: #8668FF !important;
+}
+
+/* Styles pour les backgrounds */
+.bg-primary {
+    background-color: #8668FF !important;
+}
